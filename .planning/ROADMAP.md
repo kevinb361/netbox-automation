@@ -6,7 +6,7 @@ Build a network discovery tool that collects hosts from MikroTik/Proxmox/scans, 
 
 ## Phases
 
-- [ ] **Phase 1: Foundation** - Project structure, config, CLI, database
+- [x] **Phase 1: Foundation** - Project structure, config, CLI, database
 - [ ] **Phase 2: Discovery** - Collectors and MAC correlation
 - [ ] **Phase 3: Review** - Web UI for host approval
 - [ ] **Phase 4: Push** - NetBox and DNS output
@@ -31,7 +31,7 @@ Plans:
 
 - [x] 01-01: Project Structure + CLI Shell
 - [x] 01-02: Configuration System
-- [ ] 01-03: Database Foundation
+- [x] 01-03: Database Foundation
 
 ### Phase 2: Discovery
 
@@ -94,9 +94,9 @@ Plans:
 
 ## Progress
 
-| Phase         | Plans Complete | Status      | Completed |
-| ------------- | -------------- | ----------- | --------- |
-| 1. Foundation | 2/3            | In progress | -         |
-| 2. Discovery  | 0/?            | Not started | -         |
-| 3. Review     | 0/?            | Not started | -         |
-| 4. Push       | 0/?            | Not started | -         |
+| Phase         | Plans Complete | Status      | Completed  |
+| ------------- | -------------- | ----------- | ---------- |
+| 1. Foundation | 3/3            | Complete    | 2026-01-15 |
+| 2. Discovery  | 0/?            | Not started | -          |
+| 3. Review     | 0/?            | Not started | -          |
+| 4. Push       | 0/?            | Not started | -          |

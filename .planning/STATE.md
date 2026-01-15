@@ -10,29 +10,29 @@ See: .planning/PROJECT.md (updated 2026-01-15)
 ## Current Position
 
 Phase: 1 of 4 (Foundation)
-Plan: 2 of 3 in current phase
-Status: In progress
-Last activity: 2026-01-15 — Completed 01-02-PLAN.md
+Plan: 3 of 3 in current phase
+Status: Phase complete
+Last activity: 2026-01-15 — Completed 01-03-PLAN.md
 
-Progress: ██░░░░░░░░ 20%
+Progress: ███░░░░░░░ 30%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 2
+- Total plans completed: 3
 - Average duration: 4 min
-- Total execution time: 8 min
+- Total execution time: 11 min
 
 **By Phase:**
 
-| Phase | Plans | Total | Avg/Plan |
-| ----- | ----- | ----- | -------- |
-| 1-foundation | 2/3 | 8 min | 4 min |
+| Phase        | Plans | Total  | Avg/Plan |
+| ------------ | ----- | ------ | -------- |
+| 1-foundation | 3/3   | 11 min | 4 min    |
 
 **Recent Trend:**
 
-- Last 5 plans: 01-01 (3 min), 01-02 (5 min)
+- Last 5 plans: 01-01 (3 min), 01-02 (5 min), 01-03 (3 min)
 - Trend: —
 
 ## Accumulated Context
@@ -47,6 +47,9 @@ Recent decisions affecting current work:
 - Python 3.11+ minimum version
 - Custom env var parsing to merge with YAML config
 - ConfigError exception for user-friendly error messages
+- SQLAlchemy 2.0 style with Mapped and mapped_column
+- MAC address as unique correlation key for hosts
+- Lazy database initialization on CLI startup
 
 ### Pending Todos
 
@@ -58,6 +61,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-01-15T23:06:53Z
-Stopped at: Completed 01-02-PLAN.md
+Last session: 2026-01-15T23:12:43Z
+Stopped at: Completed 01-03-PLAN.md (Phase 1 complete)
 Resume file: None
