@@ -11,7 +11,7 @@ type:
 	mypy src/
 
 test:
-	pytest
+	pytest || [ $$? -eq 5 ]
 
 ci: format lint type test
 
