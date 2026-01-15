@@ -30,7 +30,7 @@ Build a network discovery tool that collects hosts from MikroTik/Proxmox/scans, 
 Plans:
 
 - [x] 01-01: Project Structure + CLI Shell
-- [ ] 01-02: Configuration System
+- [x] 01-02: Configuration System
 - [ ] 01-03: Database Foundation
 
 ### Phase 2: Discovery
@@ -96,7 +96,7 @@ Plans:
 
 | Phase         | Plans Complete | Status      | Completed |
 | ------------- | -------------- | ----------- | --------- |
-| 1. Foundation | 1/3            | In progress | -         |
+| 1. Foundation | 2/3            | In progress | -         |
 | 2. Discovery  | 0/?            | Not started | -         |
 | 3. Review     | 0/?            | Not started | -         |
 | 4. Push       | 0/?            | Not started | -         |
