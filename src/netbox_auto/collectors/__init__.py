@@ -7,5 +7,13 @@ from netbox_auto.collectors.base import Collector, DiscoveredHost
 from netbox_auto.collectors.dhcp import DHCPCollector
 from netbox_auto.collectors.proxmox import ProxmoxCollector
 from netbox_auto.collectors.scanner import ScannerCollector
+from netbox_auto.collectors.switch import SwitchCollector
 
-__all__ = ["Collector", "DiscoveredHost", "DHCPCollector", "ProxmoxCollector", "ScannerCollector"]
+__all__ = [
+    "Collector",
+    "DiscoveredHost",
+    "DHCPCollector",
+    "ProxmoxCollector",
+    "ScannerCollector",
+    "SwitchCollector",
+]
