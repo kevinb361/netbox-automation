@@ -10,30 +10,30 @@ See: .planning/PROJECT.md (updated 2026-01-15)
 ## Current Position
 
 Phase: 2 of 4 (Discovery)
-Plan: 1 of 5 in current phase
+Plan: 3 of 5 in current phase
 Status: In progress
-Last activity: 2026-01-15 — Completed 02-01-PLAN.md
+Last activity: 2026-01-15 — Completed 02-03-PLAN.md
 
-Progress: █████░░░░░ 50%
+Progress: ██████░░░░ 60%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 4
+- Total plans completed: 6
 - Average duration: 4 min
-- Total execution time: 14 min
+- Total execution time: 23 min
 
 **By Phase:**
 
 | Phase        | Plans | Total  | Avg/Plan |
 | ------------ | ----- | ------ | -------- |
 | 1-foundation | 3/3   | 11 min | 4 min    |
-| 2-discovery  | 1/5   | 3 min  | 3 min    |
+| 2-discovery  | 3/5   | 12 min | 4 min    |
 
 **Recent Trend:**
 
-- Last 5 plans: 01-01 (3 min), 01-02 (5 min), 01-03 (3 min), 02-01 (3 min)
+- Last 5 plans: 01-03 (3 min), 02-01 (3 min), 02-04 (4 min), 02-03 (5 min)
 - Trend: —
 
 ## Accumulated Context
@@ -53,6 +53,10 @@ Recent decisions affecting current work:
 - Lazy database initialization on CLI startup
 - Protocol over ABC for Collector interface (duck-typing)
 - MAC normalization in DiscoveredHost.**post_init**
+- SwitchCollector returns dict (enrichment pattern) vs Collector protocol
+- Dual API path for switch MAC tables (bridge/switch host)
+- Lazy scapy import to avoid ImportError when not installed
+- Permission-sensitive collectors log warnings and return empty list
 
 ### Pending Todos
 
@@ -64,6 +68,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-01-15T23:28:35Z
-Stopped at: Completed 02-01-PLAN.md
+Last session: 2026-01-15T23:31:23Z
+Stopped at: Completed 02-03-PLAN.md
 Resume file: None
