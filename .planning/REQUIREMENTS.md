@@ -93,36 +93,36 @@ Explicitly excluded. Documented to prevent scope creep.
 
 Which phases cover which requirements. Updated by create-roadmap.
 
-| Requirement | Phase   | Status  |
-| ----------- | ------- | ------- |
-| CONF-01     | Phase 1 | Pending |
-| CONF-02     | Phase 1 | Pending |
-| CONF-03     | Phase 1 | Pending |
-| DATA-01     | Phase 1 | Pending |
-| DISC-01     | Phase 2 | Pending |
-| DISC-02     | Phase 2 | Pending |
-| DISC-03     | Phase 2 | Pending |
-| DISC-04     | Phase 2 | Pending |
-| DISC-05     | Phase 2 | Pending |
-| DATA-02     | Phase 2 | Pending |
-| DATA-03     | Phase 2 | Pending |
-| CLI-01      | Phase 2 | Pending |
-| REVW-01     | Phase 3 | Pending |
-| REVW-02     | Phase 3 | Pending |
-| REVW-03     | Phase 3 | Pending |
-| REVW-04     | Phase 3 | Pending |
-| REVW-05     | Phase 3 | Pending |
-| CLI-02      | Phase 3 | Pending |
-| NBRC-01     | Phase 3 | Pending |
-| NBRC-02     | Phase 3 | Pending |
-| NBRC-03     | Phase 3 | Pending |
-| NBRC-04     | Phase 3 | Pending |
-| OUTP-01     | Phase 4 | Pending |
-| OUTP-02     | Phase 4 | Pending |
-| OUTP-03     | Phase 4 | Pending |
-| OUTP-04     | Phase 4 | Pending |
-| CLI-03      | Phase 4 | Pending |
-| CLI-04      | Phase 4 | Pending |
+| Requirement | Phase   | Status   |
+| ----------- | ------- | -------- |
+| CONF-01     | Phase 1 | Complete |
+| CONF-02     | Phase 1 | Complete |
+| CONF-03     | Phase 1 | Complete |
+| DATA-01     | Phase 1 | Complete |
+| DISC-01     | Phase 2 | Pending  |
+| DISC-02     | Phase 2 | Pending  |
+| DISC-03     | Phase 2 | Pending  |
+| DISC-04     | Phase 2 | Pending  |
+| DISC-05     | Phase 2 | Pending  |
+| DATA-02     | Phase 2 | Pending  |
+| DATA-03     | Phase 2 | Pending  |
+| CLI-01      | Phase 2 | Pending  |
+| REVW-01     | Phase 3 | Pending  |
+| REVW-02     | Phase 3 | Pending  |
+| REVW-03     | Phase 3 | Pending  |
+| REVW-04     | Phase 3 | Pending  |
+| REVW-05     | Phase 3 | Pending  |
+| CLI-02      | Phase 3 | Pending  |
+| NBRC-01     | Phase 3 | Pending  |
+| NBRC-02     | Phase 3 | Pending  |
+| NBRC-03     | Phase 3 | Pending  |
+| NBRC-04     | Phase 3 | Pending  |
+| OUTP-01     | Phase 4 | Pending  |
+| OUTP-02     | Phase 4 | Pending  |
+| OUTP-03     | Phase 4 | Pending  |
+| OUTP-04     | Phase 4 | Pending  |
+| CLI-03      | Phase 4 | Pending  |
+| CLI-04      | Phase 4 | Pending  |
 
 **Coverage:**
 
