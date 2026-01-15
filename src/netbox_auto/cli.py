@@ -7,6 +7,7 @@ import typer
 
 from netbox_auto import __version__
 from netbox_auto.config import ConfigError, load_config
+from netbox_auto.database import init_db
 
 app = typer.Typer(
     name="netbox-auto",
@@ -60,6 +61,10 @@ def main(
     except ConfigError as e:
         typer.secho(f"Error: {e}", fg=typer.colors.RED, err=True)
         raise typer.Exit(1) from None
+
+    # Initialize database (creates if not exists)
+    db_path = init_db()
+    typer.echo(f"Database initialized at {db_path}")
 
 
 @app.command()
