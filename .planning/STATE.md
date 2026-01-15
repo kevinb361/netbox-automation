@@ -10,30 +10,30 @@ See: .planning/PROJECT.md (updated 2026-01-15)
 ## Current Position
 
 Phase: 2 of 4 (Discovery)
-Plan: 4 of 5 in current phase
-Status: In progress
-Last activity: 2026-01-15 — Completed 02-02-PLAN.md
+Plan: 5 of 5 in current phase
+Status: Phase complete
+Last activity: 2026-01-15 — Completed 02-05-PLAN.md
 
-Progress: ████████░░ 87%
+Progress: ██████████ 100%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 7
+- Total plans completed: 8
 - Average duration: 4 min
-- Total execution time: 28 min
+- Total execution time: 30 min
 
 **By Phase:**
 
 | Phase        | Plans | Total  | Avg/Plan |
 | ------------ | ----- | ------ | -------- |
 | 1-foundation | 3/3   | 11 min | 4 min    |
-| 2-discovery  | 4/5   | 17 min | 4 min    |
+| 2-discovery  | 5/5   | 19 min | 4 min    |
 
 **Recent Trend:**
 
-- Last 5 plans: 02-01 (3 min), 02-04 (4 min), 02-03 (5 min), 02-02 (5 min)
+- Last 5 plans: 02-05 (2 min), 02-01 (3 min), 02-04 (4 min), 02-03 (5 min), 02-02 (5 min)
 - Trend: —
 
 ## Accumulated Context
@@ -58,6 +58,8 @@ Recent decisions affecting current work:
 - Lazy scapy import to avoid ImportError when not installed
 - Permission-sensitive collectors log warnings and return empty list
 - QEMU guest agent for Proxmox VM IP addresses (graceful fallback if unavailable)
+- Hostname priority in merge: dhcp > proxmox > scan (most specific wins)
+- Continue if one collector fails, log errors, mark run completed if any data
 
 ### Pending Todos
 
@@ -69,6 +71,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-01-15T23:31:38Z
-Stopped at: Completed 02-02-PLAN.md
+Last session: 2026-01-15T23:37:12Z
+Stopped at: Completed 02-05-PLAN.md (Phase 2 complete)
 Resume file: None
