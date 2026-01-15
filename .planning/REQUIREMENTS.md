@@ -79,56 +79,58 @@ Deferred to future release. Tracked but not in current roadmap.
 
 Explicitly excluded. Documented to prevent scope creep.
 
-| Feature | Reason |
-|---------|--------|
-| Docker container tracking | Too ephemeral, just track Docker hosts |
-| Full cable path (patch panels, wall jacks) | Switch-to-device only for v1 |
-| Multi-site support | Single site only |
-| Real-time continuous discovery | On-demand runs only |
-| Full topology mapping | Scope creep, enterprise feature |
-| Agent-based discovery | Impractical for home lab |
-| AI/ML anomaly detection | Overkill for home lab scale |
+| Feature                                    | Reason                                 |
+| ------------------------------------------ | -------------------------------------- |
+| Docker container tracking                  | Too ephemeral, just track Docker hosts |
+| Full cable path (patch panels, wall jacks) | Switch-to-device only for v1           |
+| Multi-site support                         | Single site only                       |
+| Real-time continuous discovery             | On-demand runs only                    |
+| Full topology mapping                      | Scope creep, enterprise feature        |
+| Agent-based discovery                      | Impractical for home lab               |
+| AI/ML anomaly detection                    | Overkill for home lab scale            |
 
 ## Traceability
 
 Which phases cover which requirements. Updated by create-roadmap.
 
-| Requirement | Phase | Status |
-|-------------|-------|--------|
-| DISC-01 | TBD | Pending |
-| DISC-02 | TBD | Pending |
-| DISC-03 | TBD | Pending |
-| DISC-04 | TBD | Pending |
-| DISC-05 | TBD | Pending |
-| DATA-01 | TBD | Pending |
-| DATA-02 | TBD | Pending |
-| DATA-03 | TBD | Pending |
-| REVW-01 | TBD | Pending |
-| REVW-02 | TBD | Pending |
-| REVW-03 | TBD | Pending |
-| REVW-04 | TBD | Pending |
-| REVW-05 | TBD | Pending |
-| NBRC-01 | TBD | Pending |
-| NBRC-02 | TBD | Pending |
-| NBRC-03 | TBD | Pending |
-| NBRC-04 | TBD | Pending |
-| OUTP-01 | TBD | Pending |
-| OUTP-02 | TBD | Pending |
-| OUTP-03 | TBD | Pending |
-| OUTP-04 | TBD | Pending |
-| CLI-01 | TBD | Pending |
-| CLI-02 | TBD | Pending |
-| CLI-03 | TBD | Pending |
-| CLI-04 | TBD | Pending |
-| CONF-01 | TBD | Pending |
-| CONF-02 | TBD | Pending |
-| CONF-03 | TBD | Pending |
+| Requirement | Phase   | Status  |
+| ----------- | ------- | ------- |
+| CONF-01     | Phase 1 | Pending |
+| CONF-02     | Phase 1 | Pending |
+| CONF-03     | Phase 1 | Pending |
+| DATA-01     | Phase 1 | Pending |
+| DISC-01     | Phase 2 | Pending |
+| DISC-02     | Phase 2 | Pending |
+| DISC-03     | Phase 2 | Pending |
+| DISC-04     | Phase 2 | Pending |
+| DISC-05     | Phase 2 | Pending |
+| DATA-02     | Phase 2 | Pending |
+| DATA-03     | Phase 2 | Pending |
+| CLI-01      | Phase 2 | Pending |
+| REVW-01     | Phase 3 | Pending |
+| REVW-02     | Phase 3 | Pending |
+| REVW-03     | Phase 3 | Pending |
+| REVW-04     | Phase 3 | Pending |
+| REVW-05     | Phase 3 | Pending |
+| CLI-02      | Phase 3 | Pending |
+| NBRC-01     | Phase 3 | Pending |
+| NBRC-02     | Phase 3 | Pending |
+| NBRC-03     | Phase 3 | Pending |
+| NBRC-04     | Phase 3 | Pending |
+| OUTP-01     | Phase 4 | Pending |
+| OUTP-02     | Phase 4 | Pending |
+| OUTP-03     | Phase 4 | Pending |
+| OUTP-04     | Phase 4 | Pending |
+| CLI-03      | Phase 4 | Pending |
+| CLI-04      | Phase 4 | Pending |
 
 **Coverage:**
+
 - v1 requirements: 28 total
-- Mapped to phases: 0
-- Unmapped: 28 ⚠️ (pending create-roadmap)
+- Mapped to phases: 28 ✓
+- Unmapped: 0
 
 ---
-*Requirements defined: 2026-01-15*
-*Last updated: 2026-01-15 after initial definition*
+
+_Requirements defined: 2026-01-15_
+_Last updated: 2026-01-15 after initial definition_
