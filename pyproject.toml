@@ -31,7 +31,7 @@ dev = [
 ]
 
 [project.scripts]
-netbox-auto = "netbox_auto.cli:main"
+netbox-auto = "netbox_auto.cli:app"
 
 [tool.setuptools.packages.find]
 where = ["src"]

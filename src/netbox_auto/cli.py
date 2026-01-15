@@ -1,8 +1,12 @@
 """CLI entry point for netbox-auto."""
 
+from pathlib import Path
+from typing import Annotated
+
 import typer
 
 from netbox_auto import __version__
+from netbox_auto.config import ConfigError, load_config
 
 app = typer.Typer(
     name="netbox-auto",
@@ -20,21 +24,42 @@ def version_callback(value: bool) -> None:
 
 @app.callback()
 def main(
-    version: bool | None = typer.Option(
-        None,
-        "--version",
-        "-V",
-        callback=version_callback,
-        is_eager=True,
-        help="Show version and exit.",
-    ),
+    ctx: typer.Context,
+    config: Annotated[
+        Path,
+        typer.Option(
+            "--config",
+            "-c",
+            envvar="NETBOX_AUTO_CONFIG",
+            help="Path to configuration file.",
+        ),
+    ] = Path("config.yaml"),
+    version: Annotated[
+        bool | None,
+        typer.Option(
+            "--version",
+            "-V",
+            callback=version_callback,
+            is_eager=True,
+            help="Show version and exit.",
+        ),
+    ] = None,
 ) -> None:
     """Network discovery and NetBox population tool.
 
     Discover hosts from MikroTik DHCP, Proxmox VMs, and network scans.
     Correlate with switch MAC tables and push to NetBox.
     """
-    pass
+    # Store config path in context for commands to access if needed
+    ctx.ensure_object(dict)
+    ctx.obj["config_path"] = config
+
+    # Load configuration on startup
+    try:
+        load_config(config)
+    except ConfigError as e:
+        typer.secho(f"Error: {e}", fg=typer.colors.RED, err=True)
+        raise typer.Exit(1)
 
 
 @app.command()
