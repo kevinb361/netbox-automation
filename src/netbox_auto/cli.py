@@ -4,10 +4,14 @@ from pathlib import Path
 from typing import Annotated
 
 import typer
+from rich.console import Console
 
 from netbox_auto import __version__
-from netbox_auto.config import ConfigError, load_config
+from netbox_auto.config import ConfigError, get_config, load_config
 from netbox_auto.database import init_db
+from netbox_auto.discovery import run_discovery
+
+console = Console()
 
 app = typer.Typer(
     name="netbox-auto",
@@ -74,7 +78,43 @@ def discover() -> None:
     Pulls DHCP leases from MikroTik, VMs from Proxmox, scans subnets
     for static IPs, and correlates hosts with switch MAC tables.
     """
-    typer.echo("Not implemented yet")
+    config = get_config()
+
+    console.print("\n[bold]Running discovery...[/bold]\n")
+
+    # Show which collectors will run
+    collectors_enabled: list[str] = []
+    if config.mikrotik:
+        collectors_enabled.append("MikroTik DHCP")
+    if config.proxmox:
+        collectors_enabled.append("Proxmox")
+    if config.scanner and config.scanner.subnets:
+        collectors_enabled.append("Network scan")
+    if config.switches:
+        collectors_enabled.append("Switch MAC tables")
+
+    if not collectors_enabled:
+        console.print("[yellow]No collectors configured. Check your config.yaml.[/yellow]")
+        return
+
+    console.print(f"Collectors: {', '.join(collectors_enabled)}\n")
+
+    # Run discovery
+    result = run_discovery()
+
+    # Display results
+    console.print()
+    if result.errors:
+        console.print("[bold yellow]Collection warnings:[/bold yellow]")
+        for error in result.errors:
+            console.print(f"  [yellow]! {error}[/yellow]")
+        console.print()
+
+    console.print("[bold green]Discovery complete:[/bold green]")
+    console.print(f"  New hosts:     {result.new_hosts}")
+    console.print(f"  Updated hosts: {result.updated_hosts}")
+    console.print(f"  Total:         {result.total_hosts}")
+    console.print()
 
 
 @app.command()
