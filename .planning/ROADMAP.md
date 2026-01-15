@@ -53,7 +53,7 @@ Plans:
 
 - [x] 02-01: Collector Framework + DHCP Collector
 - [ ] 02-02: Proxmox Collector
-- [ ] 02-03: Network Scanner
+- [x] 02-03: Network Scanner
 - [x] 02-04: Switch MAC Collector
 - [ ] 02-05: Discovery Orchestration + CLI
 
@@ -101,6 +101,6 @@ Plans:
 | Phase         | Plans Complete | Status      | Completed  |
 | ------------- | -------------- | ----------- | ---------- |
 | 1. Foundation | 3/3            | Complete    | 2026-01-15 |
-| 2. Discovery  | 2/5            | In progress | -          |
+| 2. Discovery  | 3/5            | In progress | -          |
 | 3. Review     | 0/?            | Not started | -          |
 | 4. Push       | 0/?            | Not started | -          |
