@@ -19,6 +19,7 @@ dependencies = [
     "pydantic>=2.0",
     "pydantic-settings>=2.0",
     "sqlalchemy>=2.0",
+    "librouteros>=3.2",
 ]
 
 [project.optional-dependencies]
