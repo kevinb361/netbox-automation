@@ -9,17 +9,17 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Discovery
 
-- [ ] **DISC-01**: Tool can pull DHCP leases from MikroTik router via API
-- [ ] **DISC-02**: Tool can query Proxmox API for VM inventory (name, MAC, IP)
-- [ ] **DISC-03**: Tool can scan network subnets to discover hosts with static IPs
-- [ ] **DISC-04**: Tool can query MikroTik switch MAC tables to find host-to-port mappings
-- [ ] **DISC-05**: Tool correlates hosts across sources using MAC address as primary key
+- [x] **DISC-01**: Tool can pull DHCP leases from MikroTik router via API
+- [x] **DISC-02**: Tool can query Proxmox API for VM inventory (name, MAC, IP)
+- [x] **DISC-03**: Tool can scan network subnets to discover hosts with static IPs
+- [x] **DISC-04**: Tool can query MikroTik switch MAC tables to find host-to-port mappings
+- [x] **DISC-05**: Tool correlates hosts across sources using MAC address as primary key
 
 ### Data Management
 
-- [ ] **DATA-01**: Discovered hosts are stored in SQLite staging database
-- [ ] **DATA-02**: Duplicate hosts from different sources are merged by MAC
-- [ ] **DATA-03**: Each host has status tracking (pending/approved/rejected/pushed)
+- [x] **DATA-01**: Discovered hosts are stored in SQLite staging database
+- [x] **DATA-02**: Duplicate hosts from different sources are merged by MAC
+- [x] **DATA-03**: Each host has status tracking (pending/approved/rejected/pushed)
 
 ### Review
 
@@ -45,7 +45,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### CLI
 
-- [ ] **CLI-01**: `discover` command runs all collectors and populates staging DB
+- [x] **CLI-01**: `discover` command runs all collectors and populates staging DB
 - [ ] **CLI-02**: `serve` command starts web UI server
 - [ ] **CLI-03**: `push` command pushes approved hosts to NetBox and Unbound
 - [ ] **CLI-04**: `status` command shows discovery/push status summary
@@ -99,14 +99,14 @@ Which phases cover which requirements. Updated by create-roadmap.
 | CONF-02     | Phase 1 | Complete |
 | CONF-03     | Phase 1 | Complete |
 | DATA-01     | Phase 1 | Complete |
-| DISC-01     | Phase 2 | Pending  |
-| DISC-02     | Phase 2 | Pending  |
-| DISC-03     | Phase 2 | Pending  |
-| DISC-04     | Phase 2 | Pending  |
-| DISC-05     | Phase 2 | Pending  |
-| DATA-02     | Phase 2 | Pending  |
-| DATA-03     | Phase 2 | Pending  |
-| CLI-01      | Phase 2 | Pending  |
+| DISC-01     | Phase 2 | Complete |
+| DISC-02     | Phase 2 | Complete |
+| DISC-03     | Phase 2 | Complete |
+| DISC-04     | Phase 2 | Complete |
+| DISC-05     | Phase 2 | Complete |
+| DATA-02     | Phase 2 | Complete |
+| DATA-03     | Phase 2 | Complete |
+| CLI-01      | Phase 2 | Complete |
 | REVW-01     | Phase 3 | Pending  |
 | REVW-02     | Phase 3 | Pending  |
 | REVW-03     | Phase 3 | Pending  |
