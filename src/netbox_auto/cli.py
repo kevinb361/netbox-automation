@@ -59,7 +59,7 @@ def main(
         load_config(config)
     except ConfigError as e:
         typer.secho(f"Error: {e}", fg=typer.colors.RED, err=True)
-        raise typer.Exit(1)
+        raise typer.Exit(1) from None
 
 
 @app.command()

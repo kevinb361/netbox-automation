@@ -7,6 +7,7 @@ Env var format: NETBOX_AUTO_{SECTION}__{FIELD}
 Example: NETBOX_AUTO_MIKROTIK__PASSWORD overrides mikrotik.password
 """
 
+import os
 from pathlib import Path
 from typing import Any
 
@@ -62,9 +63,7 @@ class UnboundConfig(BaseModel):
 class DatabaseConfig(BaseModel):
     """Local database configuration."""
 
-    path: str = Field(
-        default="netbox-auto.db", description="Path to SQLite database file"
-    )
+    path: str = Field(default="netbox-auto.db", description="Path to SQLite database file")
 
 
 class Config(BaseSettings):
@@ -86,9 +85,7 @@ class Config(BaseSettings):
     proxmox: ProxmoxConfig | None = Field(
         default=None, description="Proxmox API configuration (optional)"
     )
-    netbox: NetBoxConfig | None = Field(
-        default=None, description="NetBox API configuration"
-    )
+    netbox: NetBoxConfig | None = Field(default=None, description="NetBox API configuration")
     unbound: UnboundConfig = Field(
         default_factory=UnboundConfig, description="Unbound DNS configuration"
     )
@@ -107,8 +104,46 @@ class ConfigError(Exception):
     pass
 
 
+def _deep_merge(base: dict[str, Any], override: dict[str, Any]) -> dict[str, Any]:
+    """Recursively merge override dict into base dict."""
+    result = base.copy()
+    for key, value in override.items():
+        if key in result and isinstance(result[key], dict) and isinstance(value, dict):
+            result[key] = _deep_merge(result[key], value)
+        else:
+            result[key] = value
+    return result
+
+
+def _get_env_overrides() -> dict[str, Any]:
+    """Extract config overrides from environment variables.
+
+    Looks for NETBOX_AUTO_* env vars and converts them to nested dict.
+    NETBOX_AUTO_MIKROTIK__PASSWORD=secret -> {"mikrotik": {"password": "secret"}}
+    """
+    prefix = "NETBOX_AUTO_"
+    overrides: dict[str, Any] = {}
+
+    for key, value in os.environ.items():
+        if not key.startswith(prefix):
+            continue
+
+        # Remove prefix and split by delimiter
+        parts = key[len(prefix) :].lower().split("__")
+
+        # Build nested dict
+        current = overrides
+        for part in parts[:-1]:
+            if part not in current:
+                current[part] = {}
+            current = current[part]
+        current[parts[-1]] = value
+
+    return overrides
+
+
 def load_config(path: Path | None = None) -> Config:
-    """Load configuration from YAML file.
+    """Load configuration from YAML file with environment variable overrides.
 
     Args:
         path: Path to config file. Defaults to ./config.yaml
@@ -135,12 +170,17 @@ def load_config(path: Path | None = None) -> Config:
         with open(config_path) as f:
             data: dict[str, Any] = yaml.safe_load(f) or {}
     except yaml.YAMLError as e:
-        raise ConfigError(f"Invalid YAML in {config_path}: {e}")
+        raise ConfigError(f"Invalid YAML in {config_path}: {e}") from e
+
+    # Apply environment variable overrides
+    env_overrides = _get_env_overrides()
+    if env_overrides:
+        data = _deep_merge(data, env_overrides)
 
     try:
         _config = Config(**data)
     except Exception as e:
-        raise ConfigError(f"Configuration validation failed: {e}")
+        raise ConfigError(f"Configuration validation failed: {e}") from e
 
     return _config
 
