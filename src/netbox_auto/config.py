@@ -17,12 +17,22 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class MikroTikConfig(BaseModel):
-    """MikroTik router/switch connection configuration."""
+    """MikroTik router connection configuration."""
 
     host: str = Field(description="MikroTik router hostname or IP")
     username: str = Field(description="API username")
     password: str = Field(default="", description="API password")
     port: int = Field(default=8728, description="API port (default 8728)")
+
+
+class SwitchConfig(BaseModel):
+    """MikroTik switch connection configuration for MAC table queries."""
+
+    host: str = Field(description="Switch hostname or IP")
+    username: str = Field(description="API username")
+    password: str = Field(default="", description="API password")
+    port: int = Field(default=8728, description="API port (default 8728)")
+    name: str = Field(description="Friendly name for the switch (used in switch_port field)")
 
 
 class ProxmoxConfig(BaseModel):
@@ -60,6 +70,15 @@ class UnboundConfig(BaseModel):
     )
 
 
+class ScannerConfig(BaseModel):
+    """Network scanner configuration for ARP-based host discovery."""
+
+    subnets: list[str] = Field(
+        description="List of subnets to scan (CIDR notation, e.g., '192.168.1.0/24')"
+    )
+    timeout: float = Field(default=2.0, description="ARP response timeout in seconds")
+
+
 class DatabaseConfig(BaseModel):
     """Local database configuration."""
 
@@ -82,8 +101,14 @@ class Config(BaseSettings):
     mikrotik: MikroTikConfig | None = Field(
         default=None, description="MikroTik router configuration"
     )
+    switches: list[SwitchConfig] = Field(
+        default_factory=list, description="MikroTik switches to query for MAC tables"
+    )
     proxmox: ProxmoxConfig | None = Field(
         default=None, description="Proxmox API configuration (optional)"
+    )
+    scanner: ScannerConfig | None = Field(
+        default=None, description="Network scanner configuration"
     )
     netbox: NetBoxConfig | None = Field(default=None, description="NetBox API configuration")
     unbound: UnboundConfig = Field(
