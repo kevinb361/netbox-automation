@@ -100,7 +100,7 @@ class ScannerCollector:
         answered, _ = srp(packet, timeout=self._config.timeout, verbose=0)
 
         hosts: list[DiscoveredHost] = []
-        for sent, received in answered:
+        for _sent, received in answered:
             # received.psrc is the IP address
             # received.hwsrc is the MAC address
             ip_address = received.psrc

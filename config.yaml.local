@@ -6,39 +6,35 @@
 
 # MikroTik router configuration (required for DHCP lease discovery)
 mikrotik:
-  host: "192.168.1.1" # Router IP or hostname
-  username: "admin" # API username
-  password: "" # API password (use env var for security)
-  port: 8728 # RouterOS API port (default: 8728)
+  host: "192.168.1.1"           # Router IP or hostname
+  username: "admin"              # API username
+  password: ""                   # API password (use env var for security)
+  port: 8728                     # RouterOS API port (default: 8728)
 
 # Proxmox configuration (optional - for VM discovery)
 # Set to null or remove section to disable Proxmox integration
 proxmox:
-  host: "proxmox.local" # Proxmox hostname or IP
-  username: "root@pam" # API username (user@realm format)
-  password: "" # API password or token
-  verify_ssl: true # Verify SSL certificates
+  host: "proxmox.local"          # Proxmox hostname or IP
+  username: "root@pam"           # API username (user@realm format)
+  password: ""                   # API password or token
+  verify_ssl: true               # Verify SSL certificates
 
 # NetBox API configuration (required for pushing discovered hosts)
 netbox:
-  url: "https://netbox.local" # NetBox URL (no trailing slash)
-  token: "" # API token (use env var for security)
+  url: "https://netbox.local"    # NetBox URL (no trailing slash)
+  token: ""                      # API token (use env var for security)
 
 # Unbound DNS servers to update (optional)
 # Leave hosts empty to disable DNS updates
 unbound:
   hosts:
-    - host: "dns1.local" # SSH hostname or IP
-      user: "root" # SSH username
+    - host: "dns1.local"         # SSH hostname or IP
+      user: "root"               # SSH username
       config_path: "/etc/unbound/local.d/local.conf"
     - host: "dns2.local"
       user: "root"
       config_path: "/etc/unbound/local.d/local.conf"
 
-# Discovery behavior
-discovery:
-  include_ipv6: false # Include IPv6 addresses (default: false)
-
 # Local database for tracking discovery state
 database:
-  path: "netbox-auto.db" # SQLite database path
+  path: "netbox-auto.db"         # SQLite database path

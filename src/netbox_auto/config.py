@@ -85,6 +85,12 @@ class DatabaseConfig(BaseModel):
     path: str = Field(default="netbox-auto.db", description="Path to SQLite database file")
 
 
+class DiscoveryConfig(BaseModel):
+    """Discovery behavior configuration."""
+
+    include_ipv6: bool = Field(default=False, description="Include IPv6 addresses in discovery")
+
+
 class Config(BaseSettings):
     """Main configuration for netbox-auto.
 
@@ -114,6 +120,9 @@ class Config(BaseSettings):
     )
     database: DatabaseConfig = Field(
         default_factory=DatabaseConfig, description="Local database configuration"
+    )
+    discovery: DiscoveryConfig = Field(
+        default_factory=DiscoveryConfig, description="Discovery behavior configuration"
     )
 
 

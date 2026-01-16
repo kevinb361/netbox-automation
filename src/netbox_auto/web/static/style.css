@@ -239,6 +239,15 @@ h1 {
   background-color: #c82333;
 }
 
+.btn-reset {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+.btn-reset:hover {
+  background-color: #5a6268;
+}
+
 /* Type dropdown */
 .type-select {
   padding: 0.25rem 0.5rem;

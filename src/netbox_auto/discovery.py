@@ -23,6 +23,11 @@ from netbox_auto.models import DiscoveryRun, DiscoveryStatus, Host, HostSource
 logger = logging.getLogger(__name__)
 
 
+def _is_ipv6(ip: str) -> bool:
+    """Check if an IP address is IPv6."""
+    return ":" in ip
+
+
 @dataclass
 class DiscoveryResult:
     """Results from a discovery run."""
@@ -198,11 +203,16 @@ def _merge_and_persist(
     new_count = 0
     updated_count = 0
 
+    # Get IPv6 preference from config
+    include_ipv6 = get_config().discovery.include_ipv6
+
     for mac, hosts in hosts_by_mac.items():
         # Merge IP addresses from all sources
         all_ips: set[str] = set()
         for h in hosts:
-            all_ips.update(h.ip_addresses)
+            for ip in h.ip_addresses:
+                if include_ipv6 or not _is_ipv6(ip):
+                    all_ips.add(ip)
 
         # Pick hostname by source priority: dhcp > proxmox > scan
         hostname = _pick_hostname(hosts)

@@ -62,6 +62,10 @@ unbound:
     - host: "dns1.local"
       user: "root"
       config_path: "/etc/unbound/local.d/local.conf"
+
+# Optional: include IPv6 addresses (default: false)
+discovery:
+  include_ipv6: false
 ```
 
 Secrets can be set via environment variables:

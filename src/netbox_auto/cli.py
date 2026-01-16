@@ -204,9 +204,7 @@ def push(
     # Show approved host count before starting
     session = get_session()
     approved_count = (
-        session.query(func.count(Host.id))
-        .filter(Host.status == HostStatus.APPROVED.value)
-        .scalar()
+        session.query(func.count(Host.id)).filter(Host.status == HostStatus.APPROVED.value).scalar()
         or 0
     )
     session.close()
@@ -282,10 +280,7 @@ def status() -> None:
 
     # Get recent discovery runs (last 5) with host counts
     recent_runs = (
-        session.query(DiscoveryRun)
-        .order_by(DiscoveryRun.started_at.desc())
-        .limit(5)
-        .all()
+        session.query(DiscoveryRun).order_by(DiscoveryRun.started_at.desc()).limit(5).all()
     )
 
     # Get host count for last run before closing session
@@ -293,9 +288,7 @@ def status() -> None:
     if recent_runs:
         last_run = recent_runs[0]
         run_host_count = (
-            session.query(func.count(Host.id))
-            .filter(Host.discovery_run_id == last_run.id)
-            .scalar()
+            session.query(func.count(Host.id)).filter(Host.discovery_run_id == last_run.id).scalar()
             or 0
         )
         last_run_info = {
@@ -317,7 +310,12 @@ def status() -> None:
 
     # Host Status section
     console.print("[bold]Host Status:[/bold]")
-    for status_val in [HostStatus.PENDING, HostStatus.APPROVED, HostStatus.REJECTED, HostStatus.PUSHED]:
+    for status_val in [
+        HostStatus.PENDING,
+        HostStatus.APPROVED,
+        HostStatus.REJECTED,
+        HostStatus.PUSHED,
+    ]:
         count = status_counts.get(status_val.value, 0)
         label = status_val.value.capitalize()
         console.print(f"  {label:10} {count:>5}")
@@ -328,7 +326,13 @@ def status() -> None:
 
     # Host Types section
     console.print("[bold]Host Types:[/bold]")
-    for type_val in [HostType.SERVER, HostType.WORKSTATION, HostType.IOT, HostType.NETWORK, HostType.UNKNOWN]:
+    for type_val in [
+        HostType.SERVER,
+        HostType.WORKSTATION,
+        HostType.IOT,
+        HostType.NETWORK,
+        HostType.UNKNOWN,
+    ]:
         count = type_counts.get(type_val.value, 0)
         label = type_val.value.capitalize()
         console.print(f"  {label:12} {count:>5}")

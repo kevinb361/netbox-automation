@@ -11,6 +11,7 @@
             <option value="">Select action...</option>
             <option value="approve">Approve Selected</option>
             <option value="reject">Reject Selected</option>
+            <option value="reset">Reset to Pending</option>
         </select>
         <button type="submit" class="btn btn-bulk">Apply to Selected</button>
     </div>
@@ -21,13 +22,13 @@
                 <th class="checkbox-col">
                     <input type="checkbox" id="select-all" onclick="toggleAll(this)">
                 </th>
-                <th>MAC</th>
-                <th>Hostname</th>
-                <th>IPs</th>
-                <th>Source</th>
-                <th>Switch Port</th>
-                <th>Status</th>
-                <th>Type</th>
+                <th class="sortable" onclick="sortTable(1)">MAC</th>
+                <th class="sortable" onclick="sortTable(2)">Hostname</th>
+                <th class="sortable" onclick="sortTable(3)">IPs</th>
+                <th class="sortable" onclick="sortTable(4)">Source</th>
+                <th class="sortable" onclick="sortTable(5)">Switch Port</th>
+                <th class="sortable" onclick="sortTable(6)">Status</th>
+                <th class="sortable" onclick="sortTable(7)">Type</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -58,6 +59,9 @@
                     {% endif %}
                     {% if host.status != 'rejected' %}
                     <button type="button" class="btn btn-reject" onclick="updateStatus({{ host.id }}, 'rejected')">Reject</button>
+                    {% endif %}
+                    {% if host.status != 'pending' %}
+                    <button type="button" class="btn btn-reset" onclick="updateStatus({{ host.id }}, 'pending')">Reset</button>
                     {% endif %}
                 </td>
             </tr>

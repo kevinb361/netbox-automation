@@ -27,6 +27,7 @@ netbox-auto status             # Show host counts by status/type
 ## Architecture
 
 ### Data Flow
+
 ```
 Collectors → Discovery → Staging DB → Web Review → Push → NetBox + DNS
 (discover)               (SQLite)     (serve)           (push)
@@ -40,13 +41,14 @@ Collectors → Discovery → Staging DB → Web Review → Push → NetBox + DNS
 - **push.py**: Pushes approved hosts to NetBox and DNS
 - **netbox.py**: pynetbox wrapper (lazy connection, device/VM CRUD, cables)
 - **dns.py**: Generates Unbound config, pushes via SSH/paramiko
-- **config.py**: Pydantic settings from YAML + env var overrides (NETBOX_AUTO_SECTION__FIELD)
+- **config.py**: Pydantic settings from YAML + env var overrides (NETBOX_AUTO_SECTION\_\_FIELD)
 - **database.py**: SQLAlchemy engine/session factory, SQLite storage
 - **models.py**: SQLAlchemy 2.0 ORM (Host, DiscoveryRun) with status enums
 
 ### Collectors (`collectors/`)
 
 All implement `Collector` Protocol from `base.py`:
+
 - **base.py**: `Collector` Protocol + `DiscoveredHost` dataclass (MAC as key)
 - **dhcp.py**: MikroTik DHCP leases via librouteros
 - **proxmox.py**: Proxmox VMs via proxmoxer
@@ -64,6 +66,10 @@ All implement `Collector` Protocol from `base.py`:
 ## Configuration
 
 Copy `config.example.yaml` to `config.yaml`. Secrets via env vars preferred.
+
+Key options:
+
+- `discovery.include_ipv6: false` - Filter out IPv6 addresses (default: false)
 
 ## Testing
 

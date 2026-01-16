@@ -45,9 +45,7 @@ def push_approved_hosts(
 
     try:
         # Query approved hosts
-        approved_hosts = (
-            session.query(Host).filter(Host.status == HostStatus.APPROVED.value).all()
-        )
+        approved_hosts = session.query(Host).filter(Host.status == HostStatus.APPROVED.value).all()
 
         if not approved_hosts:
             logger.info("No approved hosts to push")
@@ -71,11 +69,7 @@ def push_approved_hosts(
         # Generate and push DNS config if not skipped
         if not skip_dns:
             # Get all pushed hosts (including newly pushed) for DNS
-            pushed_hosts = (
-                session.query(Host)
-                .filter(Host.status == HostStatus.PUSHED.value)
-                .all()
-            )
+            pushed_hosts = session.query(Host).filter(Host.status == HostStatus.PUSHED.value).all()
 
             if pushed_hosts:
                 config = generate_unbound_config(pushed_hosts)
@@ -135,7 +129,9 @@ def _push_host_to_netbox(
     else:
         # Device creation needs device_type_id, role_id, site_id from config
         # For now, log that device creation needs more config
-        logger.warning(f"Device creation for {hostname} requires device_type_id, role_id, site_id configuration")
+        logger.warning(
+            f"Device creation for {hostname} requires device_type_id, role_id, site_id configuration"
+        )
         result.errors.append(f"Device creation for {hostname} skipped - NetBox IDs not configured")
         return
 

@@ -107,6 +107,7 @@ def bulk_update_hosts() -> object:
         status_map = {
             "approve": HostStatus.APPROVED.value,
             "reject": HostStatus.REJECTED.value,
+            "reset": HostStatus.PENDING.value,
         }
 
         if action not in status_map:

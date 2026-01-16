@@ -3,6 +3,7 @@
 Collects DHCP lease information from MikroTik routers via the RouterOS API.
 """
 
+import contextlib
 import logging
 from typing import TYPE_CHECKING
 
@@ -91,10 +92,8 @@ class DHCPCollector:
         except Exception as e:
             logger.error(f"Unexpected error querying DHCP leases: {e}")
         finally:
-            try:
+            with contextlib.suppress(Exception):
                 api.close()
-            except Exception:
-                pass  # Ignore close errors
 
         logger.info(f"Collected {len(hosts)} hosts from DHCP leases")
         return hosts
