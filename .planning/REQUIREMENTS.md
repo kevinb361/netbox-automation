@@ -23,18 +23,18 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Review
 
-- [ ] **REVW-01**: Web UI displays all discovered hosts in a table
-- [ ] **REVW-02**: User can approve individual hosts for push
-- [ ] **REVW-03**: User can reject individual hosts (mark as ignored)
-- [ ] **REVW-04**: User can classify hosts (server/workstation/IoT/network)
-- [ ] **REVW-05**: User can bulk approve/reject multiple hosts at once
+- [x] **REVW-01**: Web UI displays all discovered hosts in a table
+- [x] **REVW-02**: User can approve individual hosts for push
+- [x] **REVW-03**: User can reject individual hosts (mark as ignored)
+- [x] **REVW-04**: User can classify hosts (server/workstation/IoT/network)
+- [x] **REVW-05**: User can bulk approve/reject multiple hosts at once
 
 ### NetBox Reconciliation
 
-- [ ] **NBRC-01**: Tool can list existing devices from NetBox
-- [ ] **NBRC-02**: Tool compares discovered hosts with NetBox (highlights new)
-- [ ] **NBRC-03**: Tool detects stale NetBox entries (not seen in discovery)
-- [ ] **NBRC-04**: Tool can import NetBox devices into staging DB for reference
+- [x] **NBRC-01**: Tool can list existing devices from NetBox
+- [x] **NBRC-02**: Tool compares discovered hosts with NetBox (highlights new)
+- [x] **NBRC-03**: Tool detects stale NetBox entries (not seen in discovery)
+- [x] **NBRC-04**: Tool can import NetBox devices into staging DB for reference
 
 ### Output
 
@@ -46,7 +46,7 @@ Requirements for initial release. Each maps to roadmap phases.
 ### CLI
 
 - [x] **CLI-01**: `discover` command runs all collectors and populates staging DB
-- [ ] **CLI-02**: `serve` command starts web UI server
+- [x] **CLI-02**: `serve` command starts web UI server
 - [ ] **CLI-03**: `push` command pushes approved hosts to NetBox and Unbound
 - [ ] **CLI-04**: `status` command shows discovery/push status summary
 
@@ -107,16 +107,16 @@ Which phases cover which requirements. Updated by create-roadmap.
 | DATA-02     | Phase 2 | Complete |
 | DATA-03     | Phase 2 | Complete |
 | CLI-01      | Phase 2 | Complete |
-| REVW-01     | Phase 3 | Pending  |
-| REVW-02     | Phase 3 | Pending  |
-| REVW-03     | Phase 3 | Pending  |
-| REVW-04     | Phase 3 | Pending  |
-| REVW-05     | Phase 3 | Pending  |
-| CLI-02      | Phase 3 | Pending  |
-| NBRC-01     | Phase 3 | Pending  |
-| NBRC-02     | Phase 3 | Pending  |
-| NBRC-03     | Phase 3 | Pending  |
-| NBRC-04     | Phase 3 | Pending  |
+| REVW-01     | Phase 3 | Complete |
+| REVW-02     | Phase 3 | Complete |
+| REVW-03     | Phase 3 | Complete |
+| REVW-04     | Phase 3 | Complete |
+| REVW-05     | Phase 3 | Complete |
+| CLI-02      | Phase 3 | Complete |
+| NBRC-01     | Phase 3 | Complete |
+| NBRC-02     | Phase 3 | Complete |
+| NBRC-03     | Phase 3 | Complete |
+| NBRC-04     | Phase 3 | Complete |
 | OUTP-01     | Phase 4 | Pending  |
 | OUTP-02     | Phase 4 | Pending  |
 | OUTP-03     | Phase 4 | Pending  |
