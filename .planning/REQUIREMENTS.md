@@ -38,17 +38,17 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Output
 
-- [ ] **OUTP-01**: Tool creates NetBox devices/VMs for approved hosts with IP assignments
-- [ ] **OUTP-02**: Tool creates cable records in NetBox (switch port to device)
-- [ ] **OUTP-03**: Tool generates Unbound DNS config and pushes via SSH
-- [ ] **OUTP-04**: Tool supports dry-run mode (preview changes without pushing)
+- [x] **OUTP-01**: Tool creates NetBox devices/VMs for approved hosts with IP assignments
+- [x] **OUTP-02**: Tool creates cable records in NetBox (switch port to device)
+- [x] **OUTP-03**: Tool generates Unbound DNS config and pushes via SSH
+- [x] **OUTP-04**: Tool supports dry-run mode (preview changes without pushing)
 
 ### CLI
 
 - [x] **CLI-01**: `discover` command runs all collectors and populates staging DB
 - [x] **CLI-02**: `serve` command starts web UI server
-- [ ] **CLI-03**: `push` command pushes approved hosts to NetBox and Unbound
-- [ ] **CLI-04**: `status` command shows discovery/push status summary
+- [x] **CLI-03**: `push` command pushes approved hosts to NetBox and Unbound
+- [x] **CLI-04**: `status` command shows discovery/push status summary
 
 ### Configuration
 
@@ -117,12 +117,12 @@ Which phases cover which requirements. Updated by create-roadmap.
 | NBRC-02     | Phase 3 | Complete |
 | NBRC-03     | Phase 3 | Complete |
 | NBRC-04     | Phase 3 | Complete |
-| OUTP-01     | Phase 4 | Pending  |
-| OUTP-02     | Phase 4 | Pending  |
-| OUTP-03     | Phase 4 | Pending  |
-| OUTP-04     | Phase 4 | Pending  |
-| CLI-03      | Phase 4 | Pending  |
-| CLI-04      | Phase 4 | Pending  |
+| OUTP-01     | Phase 4 | Complete |
+| OUTP-02     | Phase 4 | Complete |
+| OUTP-03     | Phase 4 | Complete |
+| OUTP-04     | Phase 4 | Complete |
+| CLI-03      | Phase 4 | Complete |
+| CLI-04      | Phase 4 | Complete |
 
 **Coverage:**
 
