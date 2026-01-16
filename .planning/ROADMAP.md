@@ -9,7 +9,7 @@ Build a network discovery tool that collects hosts from MikroTik/Proxmox/scans, 
 - [x] **Phase 1: Foundation** - Project structure, config, CLI, database
 - [x] **Phase 2: Discovery** - Collectors and MAC correlation
 - [x] **Phase 3: Review** - Web UI for host approval
-- [ ] **Phase 4: Push** - NetBox and DNS output
+- [x] **Phase 4: Push** - NetBox and DNS output
 
 ## Phase Details
 
@@ -99,15 +99,15 @@ Plans:
 Plans:
 
 - [x] 04-01: NetBox Push Methods (device/VM/cable/IP creation)
-- [ ] 04-02: DNS Push Module (SSH + Unbound)
-- [ ] 04-03: Push CLI + Dry-run (orchestration)
-- [ ] 04-04: Status Command
+- [x] 04-02: DNS Push Module (SSH + Unbound)
+- [x] 04-03: Push CLI + Dry-run (orchestration)
+- [x] 04-04: Status Command
 
 ## Progress
 
-| Phase         | Plans Complete | Status      | Completed  |
-| ------------- | -------------- | ----------- | ---------- |
-| 1. Foundation | 3/3            | Complete    | 2026-01-15 |
-| 2. Discovery  | 5/5            | Complete    | 2026-01-15 |
-| 3. Review     | 5/5            | Complete    | 2026-01-16 |
-| 4. Push       | 1/4            | In progress | -          |
+| Phase         | Plans Complete | Status   | Completed  |
+| ------------- | -------------- | -------- | ---------- |
+| 1. Foundation | 3/3            | Complete | 2026-01-15 |
+| 2. Discovery  | 5/5            | Complete | 2026-01-15 |
+| 3. Review     | 5/5            | Complete | 2026-01-16 |
+| 4. Push       | 4/4            | Complete | 2026-01-16 |
