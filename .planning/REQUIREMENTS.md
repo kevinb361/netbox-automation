@@ -52,9 +52,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Configuration
 
-- [ ] **CONF-01**: Tool reads credentials and settings from YAML config file
-- [ ] **CONF-02**: Secrets can be overridden via environment variables
-- [ ] **CONF-03**: Example config file is included with the project
+- [x] **CONF-01**: Tool reads credentials and settings from YAML config file
+- [x] **CONF-02**: Secrets can be overridden via environment variables
+- [x] **CONF-03**: Example config file is included with the project
 
 ## v2 Requirements
 
