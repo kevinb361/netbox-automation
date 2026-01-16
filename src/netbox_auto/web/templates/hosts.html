@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Hosts - NetBox Auto{% endblock %}
+
+{% block content %}
+<h1>Discovered Hosts</h1>
+
+<table class="hosts-table">
+    <thead>
+        <tr>
+            <th>MAC</th>
+            <th>Hostname</th>
+            <th>IPs</th>
+            <th>Source</th>
+            <th>Switch Port</th>
+            <th>Status</th>
+            <th>Type</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for host in hosts %}
+        <tr>
+            <td class="mac"><code>{{ host.mac }}</code></td>
+            <td>{{ host.hostname or '-' }}</td>
+            <td>{{ host.ip_addresses | join(', ') if host.ip_addresses else '-' }}</td>
+            <td><span class="badge badge-source">{{ host.source }}</span></td>
+            <td>{{ host.switch_port or '-' }}</td>
+            <td>
+                <span class="badge badge-status-{{ host.status }}">{{ host.status }}</span>
+            </td>
+            <td>
+                <span class="badge badge-type-{{ host.host_type }}">{{ host.host_type }}</span>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="7" class="empty">No hosts discovered yet. Run <code>netbox-auto discover</code> to scan.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
