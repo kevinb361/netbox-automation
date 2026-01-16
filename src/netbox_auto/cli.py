@@ -118,13 +118,46 @@ def discover() -> None:
 
 
 @app.command()
-def serve() -> None:
+def serve(
+    host: Annotated[
+        str,
+        typer.Option(
+            "--host",
+            "-h",
+            help="Host to bind server to.",
+        ),
+    ] = "127.0.0.1",
+    port: Annotated[
+        int,
+        typer.Option(
+            "--port",
+            "-p",
+            help="Port to bind server to.",
+        ),
+    ] = 5000,
+    debug: Annotated[
+        bool,
+        typer.Option(
+            "--debug",
+            "-d",
+            help="Run in debug mode with auto-reload.",
+        ),
+    ] = False,
+) -> None:
     """Start the web UI for reviewing discovered hosts.
 
     Launches a local web server where you can review, classify,
     and approve hosts before pushing to NetBox.
     """
-    typer.echo("Not implemented yet")
+    from netbox_auto.web.app import create_app
+
+    console.print(f"\n[bold]Starting web server...[/bold]\n")
+    console.print(f"  URL: [link]http://{host}:{port}[/link]")
+    console.print(f"  Debug: {'on' if debug else 'off'}")
+    console.print("\n  Press [bold]Ctrl+C[/bold] to stop.\n")
+
+    flask_app = create_app()
+    flask_app.run(host=host, port=port, debug=debug)
 
 
 @app.command()
