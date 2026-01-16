@@ -98,13 +98,16 @@ Plans:
 
 Plans:
 
-- [ ] 04-01: TBD
+- [ ] 04-01: NetBox Push Methods (device/VM/cable/IP creation)
+- [ ] 04-02: DNS Push Module (SSH + Unbound)
+- [ ] 04-03: Push CLI + Dry-run (orchestration)
+- [ ] 04-04: Status Command
 
 ## Progress
 
-| Phase         | Plans Complete | Status      | Completed  |
-| ------------- | -------------- | ----------- | ---------- |
-| 1. Foundation | 3/3            | Complete    | 2026-01-15 |
-| 2. Discovery  | 5/5            | Complete    | 2026-01-15 |
-| 3. Review     | 5/5            | Complete    | 2026-01-16 |
-| 4. Push       | 0/?            | Not started | -          |
+| Phase         | Plans Complete | Status   | Completed  |
+| ------------- | -------------- | -------- | ---------- |
+| 1. Foundation | 3/3            | Complete | 2026-01-15 |
+| 2. Discovery  | 5/5            | Complete | 2026-01-15 |
+| 3. Review     | 5/5            | Complete | 2026-01-16 |
+| 4. Push       | 0/4            | Planned  | -          |
