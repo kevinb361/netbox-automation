@@ -232,6 +232,85 @@ class NetBoxClient:
         logger.info(f"Assigned IP '{ip_address}' to interface {interface_id}")
         return {"id": ip.id}
 
+    def get_or_create_interface(
+        self,
+        device_id: int,
+        name: str,
+        interface_type: str = "1000base-t",
+    ) -> dict[str, Any]:
+        """Find or create an interface on a device.
+
+        Args:
+            device_id: ID of the device.
+            name: Interface name (e.g., 'eth0', 'Ethernet1').
+            interface_type: Interface type for creation (default '1000base-t').
+
+        Returns:
+            Dictionary with 'id' of the interface (existing or created).
+
+        Raises:
+            Exception: If interface lookup or creation fails.
+        """
+        api = self._connect()
+
+        # Try to find existing interface
+        interfaces = api.dcim.interfaces.filter(device_id=device_id, name=name)
+        interface_list = list(interfaces)
+        if interface_list:
+            logger.debug(f"Found existing interface '{name}' on device {device_id}")
+            return {"id": interface_list[0].id}
+
+        # Create new interface
+        interface = api.dcim.interfaces.create(
+            device=device_id,
+            name=name,
+            type=interface_type,
+        )
+        logger.info(f"Created interface '{name}' on device {device_id} with ID {interface.id}")
+        return {"id": interface.id}
+
+    def create_cable(
+        self,
+        a_termination_type: str,
+        a_termination_id: int,
+        b_termination_type: str,
+        b_termination_id: int,
+    ) -> dict[str, Any]:
+        """Create a cable connecting two terminations.
+
+        Args:
+            a_termination_type: Type of A-side termination (e.g., 'dcim.interface').
+            a_termination_id: ID of A-side termination.
+            b_termination_type: Type of B-side termination (e.g., 'dcim.interface').
+            b_termination_id: ID of B-side termination.
+
+        Returns:
+            Dictionary with 'id' of the created cable.
+
+        Raises:
+            Exception: If cable creation fails.
+        """
+        api = self._connect()
+        cable = api.dcim.cables.create(
+            a_terminations=[
+                {
+                    "object_type": a_termination_type,
+                    "object_id": a_termination_id,
+                }
+            ],
+            b_terminations=[
+                {
+                    "object_type": b_termination_type,
+                    "object_id": b_termination_id,
+                }
+            ],
+        )
+        logger.info(
+            f"Created cable {cable.id} connecting "
+            f"{a_termination_type}:{a_termination_id} to {b_termination_type}:{b_termination_id}"
+        )
+        return {"id": cable.id}
+
 
 def get_netbox_client() -> NetBoxClient:
     """Create a NetBox client from configuration.
