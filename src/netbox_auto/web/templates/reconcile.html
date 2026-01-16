@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}Reconcile - NetBox Auto{% endblock %}
+
+{% block content %}
+<h1>NetBox Reconciliation</h1>
+
+<p class="reconcile-description">
+  Compare discovered hosts with NetBox inventory. New hosts are not yet in NetBox,
+  matched hosts exist in both, and stale entries are in NetBox but not discovered.
+</p>
+
+<div class="reconcile-actions">
+  <form method="POST" action="{{ url_for('main.reconcile_import') }}" class="inline-form">
+    <button type="submit" class="btn btn-import">Import NetBox Devices</button>
+  </form>
+</div>
+
+<!-- New Hosts Section -->
+<section class="reconcile-section">
+  <h2>
+    <span class="section-badge badge-new">New</span>
+    New Hosts ({{ new_hosts|length }})
+  </h2>
+  <p class="section-description">Discovered hosts not found in NetBox</p>
+
+  {% if new_hosts %}
+  <table class="hosts-table">
+    <thead>
+      <tr>
+        <th>MAC</th>
+        <th>Hostname</th>
+        <th>IP Addresses</th>
+        <th>Source</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for host in new_hosts %}
+      <tr class="row-new">
+        <td class="mac"><code>{{ host.mac }}</code></td>
+        <td>{{ host.hostname or '—' }}</td>
+        <td>
+          {% if host.ip_addresses %}
+            {{ host.ip_addresses | join(', ') }}
+          {% else %}
+            —
+          {% endif %}
+        </td>
+        <td><span class="badge badge-source">{{ host.source }}</span></td>
+        <td><span class="badge badge-status-{{ host.status }}">{{ host.status }}</span></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty-section">No new hosts found</div>
+  {% endif %}
+</section>
+
+<!-- Matched Hosts Section -->
+<section class="reconcile-section">
+  <h2>
+    <span class="section-badge badge-matched">Matched</span>
+    Matched Hosts ({{ matched_hosts|length }})
+  </h2>
+  <p class="section-description">Discovered hosts that exist in NetBox</p>
+
+  {% if matched_hosts %}
+  <table class="hosts-table">
+    <thead>
+      <tr>
+        <th>MAC</th>
+        <th>Hostname (Local)</th>
+        <th>Name (NetBox)</th>
+        <th>IP Address</th>
+        <th>NetBox ID</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for host, netbox in matched_hosts %}
+      <tr>
+        <td class="mac"><code>{{ host.mac }}</code></td>
+        <td>{{ host.hostname or '—' }}</td>
+        <td>{{ netbox.name }}</td>
+        <td>{{ netbox.primary_ip or '—' }}</td>
+        <td><span class="badge badge-netbox">#{{ netbox.id }}</span></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty-section">No matched hosts found</div>
+  {% endif %}
+</section>
+
+<!-- Stale NetBox Entries Section -->
+<section class="reconcile-section">
+  <h2>
+    <span class="section-badge badge-stale">Stale</span>
+    Stale NetBox Entries ({{ stale_netbox|length }})
+  </h2>
+  <p class="section-description">NetBox entries not found in discovery (may be offline or removed)</p>
+
+  {% if stale_netbox %}
+  <table class="hosts-table">
+    <thead>
+      <tr>
+        <th>NetBox ID</th>
+        <th>Name</th>
+        <th>Primary IP</th>
+        <th>Type</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in stale_netbox %}
+      <tr class="row-stale">
+        <td><span class="badge badge-netbox">#{{ item.id }}</span></td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.primary_ip or '—' }}</td>
+        <td><span class="badge badge-source">{{ item._type }}</span></td>
+        <td>{{ item.status or '—' }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty-section">No stale NetBox entries found</div>
+  {% endif %}
+</section>
+{% endblock %}

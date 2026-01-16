@@ -255,6 +255,102 @@ h1 {
   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
 }
 
+/* Reconciliation page styles */
+.reconcile-description {
+  color: #6c757d;
+  margin-bottom: 1.5rem;
+}
+
+.reconcile-actions {
+  margin-bottom: 2rem;
+}
+
+.btn-import {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  background-color: #6c757d;
+  color: #fff;
+}
+
+.btn-import:hover {
+  background-color: #5a6268;
+}
+
+.reconcile-section {
+  margin-bottom: 2.5rem;
+}
+
+.reconcile-section h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+  color: #2c3e50;
+}
+
+.section-description {
+  color: #6c757d;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+.section-badge {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.badge-new {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.badge-matched {
+  background-color: #cce5ff;
+  color: #004085;
+}
+
+.badge-stale {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.badge-netbox {
+  background-color: #e9ecef;
+  color: #495057;
+  font-family: "SF Mono", Monaco, Consolas, monospace;
+  font-size: 0.75rem;
+}
+
+/* Highlight rows in reconciliation */
+.row-new {
+  background-color: rgba(40, 167, 69, 0.05);
+}
+
+.row-new:hover {
+  background-color: rgba(40, 167, 69, 0.1) !important;
+}
+
+.row-stale {
+  background-color: rgba(255, 193, 7, 0.1);
+}
+
+.row-stale:hover {
+  background-color: rgba(255, 193, 7, 0.2) !important;
+}
+
+.empty-section {
+  padding: 2rem;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 8px;
+  color: #6c757d;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .hosts-table {
