@@ -2,6 +2,8 @@
 
 Network discovery tool that collects hosts from multiple sources, correlates them by MAC address to switch ports, and pushes to NetBox with DNS updates.
 
+![Web UI](images/netbox_auto.png)
+
 ## Features
 
 - **Multi-source discovery**: MikroTik DHCP leases, Proxmox VMs, ARP network scans, switch MAC tables
