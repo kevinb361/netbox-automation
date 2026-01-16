@@ -24,7 +24,7 @@ See archived milestone documentation.
 **Milestone Goal:** Comprehensive test coverage as safety net before future feature development.
 
 - [x] **Phase 5: Unit Tests** - Core module test coverage
-- [ ] **Phase 6: Integration & E2E Tests** - External mocks and CLI workflows
+- [x] **Phase 6: Integration & E2E Tests** - External mocks and CLI workflows
 - [ ] **Phase 7: CI Pipeline** - GitHub Actions automation
 
 ## Phase Details
@@ -71,5 +71,5 @@ Phases execute in numeric order: 5 → 6 → 7
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 5. Unit Tests | 4/4 | Complete | 2026-01-16 |
-| 6. Integration & E2E | 2/4 | In progress | - |
+| 6. Integration & E2E | 4/4 | Complete | 2026-01-16 |
 | 7. CI Pipeline | 0/1 | Not started | - |
