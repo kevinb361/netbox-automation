@@ -3,7 +3,7 @@
 ## Milestones
 
 - ✅ **v1.0 MVP** - Phases 1-4 (shipped)
-- 🚧 **v1.1 Test Infrastructure** - Phases 5-7 (in progress)
+- ✅ **v1.1 Test Infrastructure** - Phases 5-7 (shipped)
 
 ## Phases
 
@@ -19,7 +19,7 @@ See archived milestone documentation.
 
 </details>
 
-### 🚧 v1.1 Test Infrastructure (In Progress)
+### ✅ v1.1 Test Infrastructure (Complete)
 
 **Milestone Goal:** Comprehensive test coverage as safety net before future feature development.
 
@@ -61,7 +61,7 @@ See archived milestone documentation.
   2. `make ci` equivalent runs in CI (lint + type + test)
   3. Tests run on Python 3.11 and 3.12
 **Research**: Unlikely (GitHub Actions for Python is well-documented)
-**Plans**: TBD
+**Plans**: 1 (07-01)
 
 ## Progress
 
