@@ -12,7 +12,7 @@ See: .planning/PROJECT.md (updated 2026-01-15)
 Phase: 4 of 4 (Push)
 Plan: 4 of 4 in current phase
 Status: Phase complete
-Last activity: 2026-01-16 — Completed 04-04-PLAN.md
+Last activity: 2026-01-16 — Completed 04-03-PLAN.md (backfill)
 
 Progress: ██████████ 100%
 
@@ -77,6 +77,9 @@ Recent decisions affecting current work:
 - Default /32 prefix for IP assignment when not specified
 - paramiko for SSH (simpler than asyncssh for synchronous DNS push)
 - Key-based SSH auth assumed for Unbound servers
+- Push orchestration: NetBox first, then DNS (logical order)
+- Continue on per-host errors in push (collect errors, keep going)
+- Dry-run mode logs actions without mutations
 
 ### Pending Todos
 
@@ -88,6 +91,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-01-16T03:05:21Z
-Stopped at: Completed 04-02-PLAN.md
+Last session: 2026-01-16T03:11:26Z
+Stopped at: Completed 04-03-PLAN.md
 Resume file: None
