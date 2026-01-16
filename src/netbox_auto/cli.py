@@ -161,13 +161,97 @@ def serve(
 
 
 @app.command()
-def push() -> None:
+def push(
+    dry_run: Annotated[
+        bool,
+        typer.Option(
+            "--dry-run",
+            "-n",
+            help="Preview changes without pushing.",
+        ),
+    ] = False,
+    skip_netbox: Annotated[
+        bool,
+        typer.Option(
+            "--skip-netbox",
+            help="Skip NetBox push.",
+        ),
+    ] = False,
+    skip_dns: Annotated[
+        bool,
+        typer.Option(
+            "--skip-dns",
+            help="Skip DNS push.",
+        ),
+    ] = False,
+) -> None:
     """Push approved hosts to NetBox and update DNS.
 
     Creates NetBox devices/VMs for approved hosts, creates cable
     records linking switches to devices, and updates Unbound DNS.
     """
-    typer.echo("Not implemented yet")
+    from sqlalchemy import func
+
+    from netbox_auto.database import get_session
+    from netbox_auto.models import Host, HostStatus
+    from netbox_auto.push import push_approved_hosts
+
+    # Show banner
+    console.print()
+    if dry_run:
+        console.print("[bold yellow]DRY RUN[/bold yellow] - No changes will be made\n")
+
+    # Show approved host count before starting
+    session = get_session()
+    approved_count = (
+        session.query(func.count(Host.id))
+        .filter(Host.status == HostStatus.APPROVED.value)
+        .scalar()
+        or 0
+    )
+    session.close()
+
+    if approved_count == 0:
+        console.print("[yellow]No approved hosts to push.[/yellow]")
+        console.print("Use 'netbox-auto serve' to review and approve hosts first.\n")
+        return
+
+    console.print(f"[bold]Pushing {approved_count} approved hosts...[/bold]\n")
+
+    # Show what will be skipped
+    if skip_netbox:
+        console.print("  [dim]Skipping NetBox push[/dim]")
+    if skip_dns:
+        console.print("  [dim]Skipping DNS push[/dim]")
+    if skip_netbox or skip_dns:
+        console.print()
+
+    # Run push
+    result = push_approved_hosts(
+        dry_run=dry_run,
+        skip_netbox=skip_netbox,
+        skip_dns=skip_dns,
+    )
+
+    # Display results
+    console.print("[bold green]Push complete:[/bold green]")
+    console.print(f"  NetBox created: {result.netbox_created}")
+    console.print(f"  Cables created: {result.cables_created}")
+    if result.dns_updated:
+        console.print(f"  DNS servers:    {len(result.dns_updated)}")
+        for server in result.dns_updated:
+            console.print(f"    - {server}")
+    else:
+        console.print("  DNS servers:    0")
+
+    # Show errors if any
+    if result.errors:
+        console.print()
+        console.print("[bold yellow]Errors:[/bold yellow]")
+        for error in result.errors:
+            console.print(f"  [yellow]! {error}[/yellow]")
+
+    console.print()
 
 
 @app.command()
