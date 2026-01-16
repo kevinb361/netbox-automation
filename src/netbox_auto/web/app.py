@@ -3,12 +3,15 @@
 Provides create_app() factory function following Flask best practices.
 """
 
+import logging
+import os
+import secrets
 from pathlib import Path
 
-from flask import Blueprint, Flask, redirect, render_template, url_for
+from flask import Blueprint, Flask, flash, redirect, render_template, request, url_for
 
 from netbox_auto.database import get_session
-from netbox_auto.models import Host
+from netbox_auto.models import Host, HostStatus, HostType
 
 # Create blueprint for main routes
 bp = Blueprint("main", __name__)
@@ -26,9 +29,61 @@ def hosts() -> str:
     session = get_session()
     try:
         hosts_list = session.query(Host).order_by(Host.last_seen.desc()).all()
-        return render_template("hosts.html", hosts=hosts_list)
+        return render_template(
+            "hosts.html",
+            hosts=hosts_list,
+            host_types=[t.value for t in HostType],
+        )
     finally:
         session.close()
+
+
+@bp.route("/hosts/<int:host_id>/status", methods=["POST"])
+def update_host_status(host_id: int) -> object:
+    """Update a host's approval status."""
+    session = get_session()
+    try:
+        host = session.query(Host).filter_by(id=host_id).first()
+        if not host:
+            flash("Host not found", "error")
+            return redirect(url_for("main.hosts"))
+
+        new_status = request.form.get("status")
+        if new_status not in [s.value for s in HostStatus]:
+            flash("Invalid status", "error")
+            return redirect(url_for("main.hosts"))
+
+        host.status = new_status
+        session.commit()
+        flash(f"Host {host.mac} status updated to {new_status}", "success")
+    finally:
+        session.close()
+
+    return redirect(url_for("main.hosts"))
+
+
+@bp.route("/hosts/<int:host_id>/type", methods=["POST"])
+def update_host_type(host_id: int) -> object:
+    """Update a host's type classification."""
+    session = get_session()
+    try:
+        host = session.query(Host).filter_by(id=host_id).first()
+        if not host:
+            flash("Host not found", "error")
+            return redirect(url_for("main.hosts"))
+
+        new_type = request.form.get("host_type")
+        if new_type not in [t.value for t in HostType]:
+            flash("Invalid host type", "error")
+            return redirect(url_for("main.hosts"))
+
+        host.host_type = new_type
+        session.commit()
+        flash(f"Host {host.mac} type updated to {new_type}", "success")
+    finally:
+        session.close()
+
+    return redirect(url_for("main.hosts"))
 
 
 def create_app() -> Flask:
@@ -45,6 +100,22 @@ def create_app() -> Flask:
         template_folder=str(web_dir / "templates"),
         static_folder=str(web_dir / "static"),
     )
+
+    # Secret key: use env var if set, otherwise generate random key
+    # Random key means sessions invalidate on restart (acceptable for this use case)
+    app.secret_key = os.environ.get("FLASK_SECRET_KEY") or secrets.token_hex(32)
+
+    # Session cookie security settings
+    app.config["SESSION_COOKIE_HTTPONLY"] = True
+    app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
+
+    # Template auto-reload follows debug mode
+    app.config["TEMPLATES_AUTO_RELOAD"] = app.debug
+
+    # Configure request logging
+    if not app.debug:
+        # Production: log to werkzeug logger at INFO level
+        logging.getLogger("werkzeug").setLevel(logging.INFO)
 
     # Register blueprint
     app.register_blueprint(bp)
