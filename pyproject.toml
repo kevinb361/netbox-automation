@@ -63,9 +63,31 @@ warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true
 strict = true
+# Disable import-untyped for libraries without stubs (pynetbox, librouteros, proxmoxer, scapy)
+disable_error_code = ["import-untyped"]
 
 [[tool.mypy.overrides]]
 module = ["typer.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["pynetbox", "pynetbox.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["librouteros", "librouteros.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["proxmoxer", "proxmoxer.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["scapy", "scapy.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["flask", "flask.*"]
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]
