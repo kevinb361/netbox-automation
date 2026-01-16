@@ -8,7 +8,7 @@ Build a network discovery tool that collects hosts from MikroTik/Proxmox/scans, 
 
 - [x] **Phase 1: Foundation** - Project structure, config, CLI, database
 - [x] **Phase 2: Discovery** - Collectors and MAC correlation
-- [ ] **Phase 3: Review** - Web UI for host approval
+- [x] **Phase 3: Review** - Web UI for host approval
 - [ ] **Phase 4: Push** - NetBox and DNS output
 
 ## Phase Details
@@ -75,7 +75,7 @@ Plans:
 Plans:
 
 - [x] 03-01: Flask Web Application Setup
-- [ ] 03-02: Host List API
+- [x] 03-02: Host Actions (approve/reject/classify/bulk)
 - [x] 03-03: NetBox API Client
 - [x] 03-04: Host Review UI
 - [x] 03-05: NetBox Comparison
@@ -106,5 +106,5 @@ Plans:
 | ------------- | -------------- | ----------- | ---------- |
 | 1. Foundation | 3/3            | Complete    | 2026-01-15 |
 | 2. Discovery  | 5/5            | Complete    | 2026-01-15 |
-| 3. Review     | 4/5            | In progress | -          |
+| 3. Review     | 5/5            | Complete    | 2026-01-16 |
 | 4. Push       | 0/?            | Not started | -          |
