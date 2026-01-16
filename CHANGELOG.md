@@ -47,4 +47,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `status` - Show discovery/push summary
   - YAML config with environment variable overrides
 
-[1.0.0]: https://gitea:kevin/netbox-automation/releases/tag/v1.0
+[1.0.0]: https://github.com/kevinb361/netbox-automation/releases/tag/v1.0

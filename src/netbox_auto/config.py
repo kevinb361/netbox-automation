@@ -107,9 +107,7 @@ class Config(BaseSettings):
     proxmox: ProxmoxConfig | None = Field(
         default=None, description="Proxmox API configuration (optional)"
     )
-    scanner: ScannerConfig | None = Field(
-        default=None, description="Network scanner configuration"
-    )
+    scanner: ScannerConfig | None = Field(default=None, description="Network scanner configuration")
     netbox: NetBoxConfig | None = Field(default=None, description="NetBox API configuration")
     unbound: UnboundConfig = Field(
         default_factory=UnboundConfig, description="Unbound DNS configuration"

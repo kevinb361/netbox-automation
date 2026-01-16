@@ -7,7 +7,7 @@ mappings, and persists results to the staging database.
 import logging
 from collections import defaultdict
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from netbox_auto.collectors import (
     DHCPCollector,
@@ -99,7 +99,7 @@ def run_discovery() -> DiscoveryResult:
         discovery_run.status = DiscoveryStatus.FAILED.value
     else:
         discovery_run.status = DiscoveryStatus.COMPLETED.value
-    discovery_run.completed_at = datetime.now(timezone.utc)
+    discovery_run.completed_at = datetime.now(UTC)
     session.commit()
     session.close()
 

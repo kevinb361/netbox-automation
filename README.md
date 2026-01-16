@@ -21,7 +21,7 @@ Network discovery tool that collects hosts from multiple sources, correlates the
 
 ```bash
 # Clone the repository
-git clone git@gitea:kevin/netbox-automation.git
+git clone https://github.com/kevinb361/netbox-automation.git
 cd netbox-automation
 
 # Create virtual environment and install
@@ -44,7 +44,7 @@ Edit `config.yaml` with your settings:
 mikrotik:
   host: "192.168.1.1"
   username: "admin"
-  password: ""  # Use env var instead
+  password: "" # Use env var instead
 
 proxmox:
   host: "proxmox.local"

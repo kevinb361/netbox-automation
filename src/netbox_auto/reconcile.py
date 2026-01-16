@@ -211,7 +211,9 @@ def import_netbox_devices() -> int:
             # Use format: 00:NB:XX:XX:XX:XX where X is from netbox ID
             netbox_id = item["id"]
             mac_suffix = f"{netbox_id:08x}"
-            placeholder_mac = f"00:nb:{mac_suffix[0:2]}:{mac_suffix[2:4]}:{mac_suffix[4:6]}:{mac_suffix[6:8]}"
+            placeholder_mac = (
+                f"00:nb:{mac_suffix[0:2]}:{mac_suffix[2:4]}:{mac_suffix[4:6]}:{mac_suffix[6:8]}"
+            )
 
             # Check if this placeholder MAC already exists
             existing_mac = session.query(Host).filter_by(mac=placeholder_mac).first()

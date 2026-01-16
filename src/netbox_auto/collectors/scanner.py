@@ -8,7 +8,7 @@ Note: ARP scanning requires elevated privileges (root/admin) on most systems.
 
 import logging
 
-from netbox_auto.collectors.base import Collector, DiscoveredHost
+from netbox_auto.collectors.base import DiscoveredHost
 from netbox_auto.config import ScannerConfig
 from netbox_auto.models import HostSource
 
