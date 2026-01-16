@@ -9,6 +9,7 @@ import secrets
 from pathlib import Path
 
 from flask import Blueprint, Flask, flash, redirect, render_template, request, url_for
+from werkzeug.wrappers import Response
 
 from netbox_auto.database import get_session
 from netbox_auto.models import Host, HostStatus, HostType
@@ -19,7 +20,7 @@ bp = Blueprint("main", __name__)
 
 
 @bp.route("/")
-def index() -> object:
+def index() -> Response:
     """Redirect root to hosts list."""
     return redirect(url_for("main.hosts"))
 
@@ -40,7 +41,7 @@ def hosts() -> str:
 
 
 @bp.route("/hosts/<int:host_id>/status", methods=["POST"])
-def update_host_status(host_id: int) -> object:
+def update_host_status(host_id: int) -> Response:
     """Update a host's approval status."""
     session = get_session()
     try:
@@ -64,7 +65,7 @@ def update_host_status(host_id: int) -> object:
 
 
 @bp.route("/hosts/<int:host_id>/type", methods=["POST"])
-def update_host_type(host_id: int) -> object:
+def update_host_type(host_id: int) -> Response:
     """Update a host's type classification."""
     session = get_session()
     try:
@@ -88,7 +89,7 @@ def update_host_type(host_id: int) -> object:
 
 
 @bp.route("/hosts/bulk", methods=["POST"])
-def bulk_update_hosts() -> object:
+def bulk_update_hosts() -> Response:
     """Bulk update status for multiple hosts."""
     session = get_session()
     try:
@@ -144,7 +145,7 @@ def reconcile() -> str:
 
 
 @bp.route("/reconcile/import", methods=["POST"])
-def reconcile_import() -> object:
+def reconcile_import() -> Response:
     """Import devices and VMs from NetBox into staging database."""
     try:
         count = import_netbox_devices()

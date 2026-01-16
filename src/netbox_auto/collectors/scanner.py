@@ -7,6 +7,7 @@ Note: ARP scanning requires elevated privileges (root/admin) on most systems.
 """
 
 import logging
+from typing import Any
 
 from netbox_auto.collectors.base import DiscoveredHost
 from netbox_auto.config import ScannerConfig
@@ -51,7 +52,7 @@ class ScannerCollector:
         """
         try:
             # Import scapy lazily to avoid import errors if not installed
-            from scapy.all import ARP, Ether, srp
+            from scapy.all import ARP, Ether, srp  # type: ignore[attr-defined]
         except ImportError:
             logger.error("scapy not installed - cannot perform network scanning")
             return []
@@ -77,9 +78,9 @@ class ScannerCollector:
     def _scan_subnet(
         self,
         subnet: str,
-        ARP: type,  # noqa: N803 - scapy naming convention
-        Ether: type,  # noqa: N803 - scapy naming convention
-        srp: type,  # noqa: N803 - scapy naming convention
+        ARP: Any,  # noqa: N803 - scapy naming convention
+        Ether: Any,  # noqa: N803 - scapy naming convention
+        srp: Any,  # noqa: N803 - scapy naming convention
     ) -> list[DiscoveredHost]:
         """Scan a single subnet using ARP.
 

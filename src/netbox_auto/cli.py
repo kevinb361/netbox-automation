@@ -267,14 +267,16 @@ def status() -> None:
     session = get_session()
 
     # Count hosts by status
-    status_counts = dict(
-        session.query(Host.status, func.count(Host.id)).group_by(Host.status).all()
-    )
+    status_counts: dict[str, int] = {
+        row[0]: row[1]
+        for row in session.query(Host.status, func.count(Host.id)).group_by(Host.status).all()
+    }
 
     # Count hosts by type
-    type_counts = dict(
-        session.query(Host.host_type, func.count(Host.id)).group_by(Host.host_type).all()
-    )
+    type_counts: dict[str, int] = {
+        row[0]: row[1]
+        for row in session.query(Host.host_type, func.count(Host.id)).group_by(Host.host_type).all()
+    }
 
     total_hosts = session.query(func.count(Host.id)).scalar() or 0
 
@@ -344,8 +346,9 @@ def status() -> None:
         console.print("[bold]Recent Discovery:[/bold]")
 
         # Format timestamp
-        if last_run_info["started_at"]:
-            run_time = last_run_info["started_at"].strftime("%Y-%m-%d %H:%M")
+        started_at = last_run_info["started_at"]
+        if started_at and hasattr(started_at, "strftime"):
+            run_time = started_at.strftime("%Y-%m-%d %H:%M")
         else:
             run_time = "unknown"
 
