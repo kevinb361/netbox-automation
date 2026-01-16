@@ -71,9 +71,7 @@ class TestStatusTransitions:
 
         # Query using same filter as push module
         approved_hosts = (
-            in_memory_db.query(Host)
-            .filter(Host.status == HostStatus.APPROVED.value)
-            .all()
+            in_memory_db.query(Host).filter(Host.status == HostStatus.APPROVED.value).all()
         )
 
         # Only the APPROVED host should be selected

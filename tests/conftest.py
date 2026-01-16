@@ -4,7 +4,6 @@ Provides factory functions and database fixtures used across test modules.
 """
 
 from collections.abc import Iterator
-from typing import Any
 
 import pytest
 from sqlalchemy import create_engine

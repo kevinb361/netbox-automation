@@ -4,7 +4,6 @@ Tests MAC correlation logic and source priority for hostname selection.
 Covers requirements UNIT-01 and UNIT-02.
 """
 
-
 from netbox_auto.discovery import _pick_hostname, _pick_primary_source
 from netbox_auto.models import HostSource
 

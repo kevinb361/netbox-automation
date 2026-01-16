@@ -6,16 +6,12 @@ Tests for host matching and categorization logic:
 - UNIT-10: Stale hosts identification
 """
 
-import pytest
-
 from netbox_auto.models import Host, HostSource, HostStatus
 from netbox_auto.reconcile import (
-    ReconciliationResult,
     _match_host_to_netbox,
     _normalize_ip,
     reconcile_hosts,
 )
-
 
 # =============================================================================
 # Helper function tests: _normalize_ip
