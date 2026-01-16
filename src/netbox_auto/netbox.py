@@ -11,7 +11,7 @@ import pynetbox
 from pynetbox.core.api import Api as NetBoxApi
 
 if TYPE_CHECKING:
-    from netbox_auto.config import NetBoxConfig
+    pass
 
 logger = logging.getLogger(__name__)
 
@@ -141,6 +141,96 @@ class NetBoxClient:
 
         logger.info(f"Fetched {len(vms)} VMs from NetBox")
         return vms
+
+    def create_device(
+        self,
+        name: str,
+        device_type_id: int,
+        device_role_id: int,
+        site_id: int,
+    ) -> dict[str, Any]:
+        """Create a new device in NetBox.
+
+        Args:
+            name: Device name.
+            device_type_id: ID of the device type.
+            device_role_id: ID of the device role.
+            site_id: ID of the site.
+
+        Returns:
+            Dictionary with 'id' of the created device.
+
+        Raises:
+            Exception: If device creation fails.
+        """
+        api = self._connect()
+        device = api.dcim.devices.create(
+            name=name,
+            device_type=device_type_id,
+            role=device_role_id,
+            site=site_id,
+            status="active",
+        )
+        logger.info(f"Created device '{name}' with ID {device.id}")
+        return {"id": device.id}
+
+    def create_vm(
+        self,
+        name: str,
+        cluster_id: int,
+    ) -> dict[str, Any]:
+        """Create a new virtual machine in NetBox.
+
+        Args:
+            name: VM name.
+            cluster_id: ID of the cluster to place the VM in.
+
+        Returns:
+            Dictionary with 'id' of the created VM.
+
+        Raises:
+            Exception: If VM creation fails.
+        """
+        api = self._connect()
+        vm = api.virtualization.virtual_machines.create(
+            name=name,
+            cluster=cluster_id,
+            status="active",
+        )
+        logger.info(f"Created VM '{name}' with ID {vm.id}")
+        return {"id": vm.id}
+
+    def assign_ip(
+        self,
+        ip_address: str,
+        interface_id: int,
+        interface_type: str = "dcim.interface",
+    ) -> dict[str, Any]:
+        """Assign an IP address to an interface.
+
+        Args:
+            ip_address: IP address with or without prefix (e.g., '192.168.1.1' or '192.168.1.1/24').
+            interface_id: ID of the interface to assign the IP to.
+            interface_type: Type of interface ('dcim.interface' for devices, 'virtualization.vminterface' for VMs).
+
+        Returns:
+            Dictionary with 'id' of the created IP address.
+
+        Raises:
+            Exception: If IP assignment fails.
+        """
+        api = self._connect()
+        # Ensure IP has prefix length
+        if "/" not in ip_address:
+            ip_address = f"{ip_address}/32"
+
+        ip = api.ipam.ip_addresses.create(
+            address=ip_address,
+            assigned_object_type=interface_type,
+            assigned_object_id=interface_id,
+        )
+        logger.info(f"Assigned IP '{ip_address}' to interface {interface_id}")
+        return {"id": ip.id}
 
 
 def get_netbox_client() -> NetBoxClient:
