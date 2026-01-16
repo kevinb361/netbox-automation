@@ -3,7 +3,7 @@
 ## Milestones
 
 - ✅ **v1.0 MVP** - Phases 1-4 (shipped)
-- 🔄 **v1.1 Test Infrastructure** - Phases 5-8 (in progress)
+- ✅ **v1.1 Test Infrastructure** - Phases 5-8 (shipped)
 
 ## Phases
 
@@ -19,7 +19,7 @@ See archived milestone documentation.
 
 </details>
 
-### 🔄 v1.1 Test Infrastructure (In Progress)
+### ✅ v1.1 Test Infrastructure (Complete)
 
 **Milestone Goal:** Comprehensive test coverage as safety net before future feature development.
 
