@@ -2,95 +2,52 @@
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-01-15)
+See: .planning/PROJECT.md (updated 2026-01-16)
 
 **Core value:** Automated discovery and correlation of network hosts to their switch ports — eliminating manual data gathering and reducing NetBox population from hours to minutes.
-**Current focus:** Phase 4 — Push
+**Current focus:** v1.0 shipped — planning next milestone
 
 ## Current Position
 
-Phase: 4 of 4 (Push)
-Plan: 4 of 4 in current phase
-Status: Phase 4 verified, milestone complete
-Last activity: 2026-01-16 — Phase 4 verified (5/5 criteria passed)
+Phase: v1.0 complete
+Plan: Not started
+Status: Ready for next milestone
+Last activity: 2026-01-16 — v1.0 milestone complete
 
-Progress: ██████████ 100%
+Progress: v1.0 SHIPPED
 
 ## Performance Metrics
 
-**Velocity:**
+**v1.0 Summary:**
 
 - Total plans completed: 17
-- Average duration: 3 min
-- Total execution time: 48 min
-
-**By Phase:**
-
-| Phase        | Plans | Total  | Avg/Plan |
-| ------------ | ----- | ------ | -------- |
-| 1-foundation | 3/3   | 11 min | 4 min    |
-| 2-discovery  | 5/5   | 19 min | 4 min    |
-| 3-review     | 5/5   | 13 min | 3 min    |
-| 4-push       | 4/4   | 5 min  | 1 min    |
-
-**Recent Trend:**
-
-- Last 5 plans: 04-04 (3 min), 04-01 (2 min), 03-02 (4 min), 03-04 (3 min), 03-05 (2 min)
-- Trend: stable
+- Total phases: 4
+- Average duration: 3 min per plan
+- Total execution time: ~48 min
 
 ## Accumulated Context
 
 ### Decisions
 
-Decisions are logged in PROJECT.md Key Decisions table.
-Recent decisions affecting current work:
-
-- Used typer[all] for CLI framework with rich output
-- src/ layout for package structure
-- Python 3.11+ minimum version
-- Custom env var parsing to merge with YAML config
-- ConfigError exception for user-friendly error messages
-- SQLAlchemy 2.0 style with Mapped and mapped_column
-- MAC address as unique correlation key for hosts
-- Lazy database initialization on CLI startup
-- Protocol over ABC for Collector interface (duck-typing)
-- MAC normalization in DiscoveredHost.**post_init**
-- SwitchCollector returns dict (enrichment pattern) vs Collector protocol
-- Dual API path for switch MAC tables (bridge/switch host)
-- Lazy scapy import to avoid ImportError when not installed
-- Permission-sensitive collectors log warnings and return empty list
-- QEMU guest agent for Proxmox VM IP addresses (graceful fallback if unavailable)
-- Hostname priority in merge: dhcp > proxmox > scan (most specific wins)
-- Continue if one collector fails, log errors, mark run completed if any data
-- Lazy connection for NetBox client - connect on first use
-- Return empty list from NetBox client on failure (consistent with collectors)
-- Strip IP prefix length from NetBox responses for comparison
-- Generate random Flask secret key if FLASK_SECRET_KEY env var not set
-- Session cookies httponly=true and samesite=lax by default
-- Match hosts to NetBox by IP address comparison
-- Generate placeholder MACs for imported NetBox devices (00:nb:XX format)
-- Three-category reconciliation: new, matched, stale
-- JS helper functions for form actions to avoid nested HTML forms
-- POST-redirect pattern for all form mutations
-- Push methods raise on failure (fail loudly vs read methods which fail gracefully)
-- Get-or-create pattern for interfaces to support idempotent operations
-- Default /32 prefix for IP assignment when not specified
-- paramiko for SSH (simpler than asyncssh for synchronous DNS push)
-- Key-based SSH auth assumed for Unbound servers
-- Push orchestration: NetBox first, then DNS (logical order)
-- Continue on per-host errors in push (collect errors, keep going)
-- Dry-run mode logs actions without mutations
+All v1.0 decisions logged in PROJECT.md Key Decisions table with outcomes.
 
 ### Pending Todos
 
-None yet.
+None — milestone complete.
 
 ### Blockers/Concerns
 
-None yet.
+None.
 
 ## Session Continuity
 
-Last session: 2026-01-16T03:11:26Z
-Stopped at: Completed 04-03-PLAN.md
+Last session: 2026-01-16
+Stopped at: v1.0 milestone completion
 Resume file: None
+
+## Next Steps
+
+1. `/gsd:discuss-milestone` — thinking partner for next milestone
+2. `/gsd:new-milestone` — update PROJECT.md with new goals
+3. `/gsd:define-requirements` — scope v2 features
+4. `/gsd:create-roadmap` — plan v2 phases
