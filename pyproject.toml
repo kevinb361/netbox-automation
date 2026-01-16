@@ -25,6 +25,7 @@ dependencies = [
     "scapy>=2.5",
     "flask>=3.0",
     "pynetbox>=7.0",
+    "paramiko>=3.0",
 ]
 
 [project.optional-dependencies]
