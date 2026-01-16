@@ -151,7 +151,7 @@ def serve(
     """
     from netbox_auto.web.app import create_app
 
-    console.print(f"\n[bold]Starting web server...[/bold]\n")
+    console.print("\n[bold]Starting web server...[/bold]\n")
     console.print(f"  URL: [link]http://{host}:{port}[/link]")
     console.print(f"  Debug: {'on' if debug else 'off'}")
     console.print("\n  Press [bold]Ctrl+C[/bold] to stop.\n")
@@ -177,7 +177,104 @@ def status() -> None:
     Displays counts of discovered hosts, pending approvals,
     and recent push activity.
     """
-    typer.echo("Not implemented yet")
+    from sqlalchemy import func
+
+    from netbox_auto.database import get_session
+    from netbox_auto.models import DiscoveryRun, DiscoveryStatus, Host, HostStatus, HostType
+
+    session = get_session()
+
+    # Count hosts by status
+    status_counts = dict(
+        session.query(Host.status, func.count(Host.id)).group_by(Host.status).all()
+    )
+
+    # Count hosts by type
+    type_counts = dict(
+        session.query(Host.host_type, func.count(Host.id)).group_by(Host.host_type).all()
+    )
+
+    total_hosts = session.query(func.count(Host.id)).scalar() or 0
+
+    # Get recent discovery runs (last 5) with host counts
+    recent_runs = (
+        session.query(DiscoveryRun)
+        .order_by(DiscoveryRun.started_at.desc())
+        .limit(5)
+        .all()
+    )
+
+    # Get host count for last run before closing session
+    last_run_info = None
+    if recent_runs:
+        last_run = recent_runs[0]
+        run_host_count = (
+            session.query(func.count(Host.id))
+            .filter(Host.discovery_run_id == last_run.id)
+            .scalar()
+            or 0
+        )
+        last_run_info = {
+            "started_at": last_run.started_at,
+            "status": last_run.status,
+            "host_count": run_host_count,
+        }
+
+    session.close()
+
+    # Handle empty database
+    if total_hosts == 0 and not recent_runs:
+        console.print(
+            "\n[yellow]No hosts discovered yet. Run 'netbox-auto discover' first.[/yellow]\n"
+        )
+        return
+
+    console.print()
+
+    # Host Status section
+    console.print("[bold]Host Status:[/bold]")
+    for status_val in [HostStatus.PENDING, HostStatus.APPROVED, HostStatus.REJECTED, HostStatus.PUSHED]:
+        count = status_counts.get(status_val.value, 0)
+        label = status_val.value.capitalize()
+        console.print(f"  {label:10} {count:>5}")
+    console.print("  " + "─" * 16)
+    console.print(f"  {'Total':10} {total_hosts:>5}")
+
+    console.print()
+
+    # Host Types section
+    console.print("[bold]Host Types:[/bold]")
+    for type_val in [HostType.SERVER, HostType.WORKSTATION, HostType.IOT, HostType.NETWORK, HostType.UNKNOWN]:
+        count = type_counts.get(type_val.value, 0)
+        label = type_val.value.capitalize()
+        console.print(f"  {label:12} {count:>5}")
+
+    console.print()
+
+    # Recent Discovery section
+    if last_run_info:
+        console.print("[bold]Recent Discovery:[/bold]")
+
+        # Format timestamp
+        if last_run_info["started_at"]:
+            run_time = last_run_info["started_at"].strftime("%Y-%m-%d %H:%M")
+        else:
+            run_time = "unknown"
+
+        # Format status
+        run_status = last_run_info["status"]
+        if run_status == DiscoveryStatus.COMPLETED.value:
+            status_display = "completed"
+        elif run_status == DiscoveryStatus.RUNNING.value:
+            status_display = "running"
+        else:
+            status_display = "failed"
+
+        console.print(
+            f"  Last run: {run_time} ({status_display}, {last_run_info['host_count']} hosts)"
+        )
+
+    console.print()
 
 
 if __name__ == "__main__":
