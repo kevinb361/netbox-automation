@@ -1,42 +1,96 @@
-{% extends "base.html" %}
-
-{% block title %}Hosts - NetBox Auto{% endblock %}
-
-{% block content %}
+{% extends "base.html" %} {% block title %}Hosts - NetBox Auto{% endblock %} {%
+block content %}
 <h1>Discovered Hosts</h1>
 
 <table class="hosts-table">
-    <thead>
-        <tr>
-            <th>MAC</th>
-            <th>Hostname</th>
-            <th>IPs</th>
-            <th>Source</th>
-            <th>Switch Port</th>
-            <th>Status</th>
-            <th>Type</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for host in hosts %}
-        <tr>
-            <td class="mac"><code>{{ host.mac }}</code></td>
-            <td>{{ host.hostname or '-' }}</td>
-            <td>{{ host.ip_addresses | join(', ') if host.ip_addresses else '-' }}</td>
-            <td><span class="badge badge-source">{{ host.source }}</span></td>
-            <td>{{ host.switch_port or '-' }}</td>
-            <td>
-                <span class="badge badge-status-{{ host.status }}">{{ host.status }}</span>
-            </td>
-            <td>
-                <span class="badge badge-type-{{ host.host_type }}">{{ host.host_type }}</span>
-            </td>
-        </tr>
-        {% else %}
-        <tr>
-            <td colspan="7" class="empty">No hosts discovered yet. Run <code>netbox-auto discover</code> to scan.</td>
-        </tr>
-        {% endfor %}
-    </tbody>
+  <thead>
+    <tr>
+      <th>MAC</th>
+      <th>Hostname</th>
+      <th>IPs</th>
+      <th>Source</th>
+      <th>Switch Port</th>
+      <th>Status</th>
+      <th>Type</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for host in hosts %}
+    <tr>
+      <td class="mac"><code>{{ host.mac }}</code></td>
+      <td>{{ host.hostname or '-' }}</td>
+      <td>
+        {{ host.ip_addresses | join(', ') if host.ip_addresses else '-' }}
+      </td>
+      <td><span class="badge badge-source">{{ host.source }}</span></td>
+      <td>{{ host.switch_port or '-' }}</td>
+      <td>
+        <span class="badge badge-status-{{ host.status }}"
+          >{{ host.status }}</span
+        >
+      </td>
+      <td>
+        <form
+          action="{{ url_for('main.update_host_type', host_id=host.id) }}"
+          method="post"
+          class="inline-form"
+        >
+          <select
+            name="host_type"
+            class="type-select"
+            onchange="this.form.submit()"
+          >
+            {% for t in host_types %}
+            <option
+              value="{{ t }}"
+              {%
+              if
+              t=""
+              ="host.host_type"
+              %}selected{%
+              endif
+              %}
+            >
+              {{ t }}
+            </option>
+            {% endfor %}
+          </select>
+        </form>
+      </td>
+      <td class="actions-cell">
+        {% if host.status != 'approved' %}
+        <form
+          action="{{ url_for('main.update_host_status', host_id=host.id) }}"
+          method="post"
+          class="inline-form"
+        >
+          <input type="hidden" name="status" value="approved" />
+          <button type="submit" class="btn btn-approve" title="Approve">
+            Approve
+          </button>
+        </form>
+        {% endif %} {% if host.status != 'rejected' %}
+        <form
+          action="{{ url_for('main.update_host_status', host_id=host.id) }}"
+          method="post"
+          class="inline-form"
+        >
+          <input type="hidden" name="status" value="rejected" />
+          <button type="submit" class="btn btn-reject" title="Reject">
+            Reject
+          </button>
+        </form>
+        {% endif %}
+      </td>
+    </tr>
+    {% else %}
+    <tr>
+      <td colspan="8" class="empty">
+        No hosts discovered yet. Run <code>netbox-auto discover</code> to scan.
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
 </table>
 {% endblock %}

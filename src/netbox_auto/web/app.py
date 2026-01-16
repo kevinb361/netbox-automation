@@ -12,6 +12,7 @@ from flask import Blueprint, Flask, flash, redirect, render_template, request, u
 
 from netbox_auto.database import get_session
 from netbox_auto.models import Host, HostStatus, HostType
+from netbox_auto.reconcile import import_netbox_devices, reconcile_hosts
 
 # Create blueprint for main routes
 bp = Blueprint("main", __name__)
@@ -82,6 +83,33 @@ def update_host_type(host_id: int) -> object:
         flash(f"Host {host.mac} type updated to {new_type}", "success")
     finally:
         session.close()
+
+    return redirect(url_for("main.hosts"))
+
+
+@bp.route("/reconcile")
+def reconcile() -> str:
+    """Display reconciliation comparison between discovered hosts and NetBox."""
+    result = reconcile_hosts()
+    return render_template(
+        "reconcile.html",
+        new_hosts=result.new_hosts,
+        matched_hosts=result.matched_hosts,
+        stale_netbox=result.stale_netbox,
+    )
+
+
+@bp.route("/reconcile/import", methods=["POST"])
+def reconcile_import() -> object:
+    """Import devices and VMs from NetBox into staging database."""
+    try:
+        count = import_netbox_devices()
+        if count > 0:
+            flash(f"Imported {count} devices from NetBox", "success")
+        else:
+            flash("No new devices to import from NetBox", "success")
+    except Exception as e:
+        flash(f"Error importing from NetBox: {e}", "error")
 
     return redirect(url_for("main.hosts"))
 
