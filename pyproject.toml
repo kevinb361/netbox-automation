@@ -23,6 +23,7 @@ dependencies = [
     "proxmoxer>=2.0",
     "requests>=2.0",
     "scapy>=2.5",
+    "pynetbox>=7.0",
 ]
 
 [project.optional-dependencies]
