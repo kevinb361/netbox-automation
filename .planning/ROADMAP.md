@@ -74,7 +74,11 @@ Plans:
 
 Plans:
 
-- [ ] 03-01: TBD
+- [ ] 03-01: Flask Web Application Setup
+- [ ] 03-02: Host List API
+- [x] 03-03: NetBox API Client
+- [ ] 03-04: Host Review UI
+- [ ] 03-05: NetBox Comparison
 
 ### Phase 4: Push
 
@@ -102,5 +106,5 @@ Plans:
 | ------------- | -------------- | ----------- | ---------- |
 | 1. Foundation | 3/3            | Complete    | 2026-01-15 |
 | 2. Discovery  | 5/5            | Complete    | 2026-01-15 |
-| 3. Review     | 0/?            | Not started | -          |
+| 3. Review     | 1/5            | In progress | -          |
 | 4. Push       | 0/?            | Not started | -          |
