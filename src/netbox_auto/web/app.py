@@ -87,6 +87,49 @@ def update_host_type(host_id: int) -> object:
     return redirect(url_for("main.hosts"))
 
 
+@bp.route("/hosts/bulk", methods=["POST"])
+def bulk_update_hosts() -> object:
+    """Bulk update status for multiple hosts."""
+    session = get_session()
+    try:
+        action = request.form.get("action")
+        host_ids = request.form.getlist("host_ids")
+
+        if not action:
+            flash("Please select an action", "error")
+            return redirect(url_for("main.hosts"))
+
+        if not host_ids:
+            flash("Please select at least one host", "error")
+            return redirect(url_for("main.hosts"))
+
+        # Map action to status
+        status_map = {
+            "approve": HostStatus.APPROVED.value,
+            "reject": HostStatus.REJECTED.value,
+        }
+
+        if action not in status_map:
+            flash("Invalid action", "error")
+            return redirect(url_for("main.hosts"))
+
+        new_status = status_map[action]
+
+        # Convert to integers and update
+        host_id_ints = [int(hid) for hid in host_ids]
+        updated = (
+            session.query(Host)
+            .filter(Host.id.in_(host_id_ints))
+            .update({Host.status: new_status}, synchronize_session="fetch")
+        )
+        session.commit()
+        flash(f"Updated {updated} hosts to {new_status}", "success")
+    finally:
+        session.close()
+
+    return redirect(url_for("main.hosts"))
+
+
 @bp.route("/reconcile")
 def reconcile() -> str:
     """Display reconciliation comparison between discovered hosts and NetBox."""

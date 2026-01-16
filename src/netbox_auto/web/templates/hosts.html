@@ -1,96 +1,107 @@
-{% extends "base.html" %} {% block title %}Hosts - NetBox Auto{% endblock %} {%
-block content %}
+{% extends "base.html" %}
+
+{% block title %}Hosts - NetBox Auto{% endblock %}
+
+{% block content %}
 <h1>Discovered Hosts</h1>
 
-<table class="hosts-table">
-  <thead>
-    <tr>
-      <th>MAC</th>
-      <th>Hostname</th>
-      <th>IPs</th>
-      <th>Source</th>
-      <th>Switch Port</th>
-      <th>Status</th>
-      <th>Type</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for host in hosts %}
-    <tr>
-      <td class="mac"><code>{{ host.mac }}</code></td>
-      <td>{{ host.hostname or '-' }}</td>
-      <td>
-        {{ host.ip_addresses | join(', ') if host.ip_addresses else '-' }}
-      </td>
-      <td><span class="badge badge-source">{{ host.source }}</span></td>
-      <td>{{ host.switch_port or '-' }}</td>
-      <td>
-        <span class="badge badge-status-{{ host.status }}"
-          >{{ host.status }}</span
-        >
-      </td>
-      <td>
-        <form
-          action="{{ url_for('main.update_host_type', host_id=host.id) }}"
-          method="post"
-          class="inline-form"
-        >
-          <select
-            name="host_type"
-            class="type-select"
-            onchange="this.form.submit()"
-          >
-            {% for t in host_types %}
-            <option
-              value="{{ t }}"
-              {%
-              if
-              t=""
-              ="host.host_type"
-              %}selected{%
-              endif
-              %}
-            >
-              {{ t }}
-            </option>
+<form action="{{ url_for('main.bulk_update_hosts') }}" method="post" id="bulk-form">
+    <div class="bulk-actions">
+        <select name="action" class="bulk-select" required>
+            <option value="">Select action...</option>
+            <option value="approve">Approve Selected</option>
+            <option value="reject">Reject Selected</option>
+        </select>
+        <button type="submit" class="btn btn-bulk">Apply to Selected</button>
+    </div>
+
+    <table class="hosts-table">
+        <thead>
+            <tr>
+                <th class="checkbox-col">
+                    <input type="checkbox" id="select-all" onclick="toggleAll(this)">
+                </th>
+                <th>MAC</th>
+                <th>Hostname</th>
+                <th>IPs</th>
+                <th>Source</th>
+                <th>Switch Port</th>
+                <th>Status</th>
+                <th>Type</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for host in hosts %}
+            <tr>
+                <td class="checkbox-col">
+                    <input type="checkbox" name="host_ids" value="{{ host.id }}" class="host-checkbox">
+                </td>
+                <td class="mac"><code>{{ host.mac }}</code></td>
+                <td>{{ host.hostname or '-' }}</td>
+                <td>{{ host.ip_addresses | join(', ') if host.ip_addresses else '-' }}</td>
+                <td><span class="badge badge-source">{{ host.source }}</span></td>
+                <td>{{ host.switch_port or '-' }}</td>
+                <td>
+                    <span class="badge badge-status-{{ host.status }}">{{ host.status }}</span>
+                </td>
+                <td>
+                    <select name="host_type_{{ host.id }}" class="type-select" onchange="updateType({{ host.id }}, this.value)">
+                        {% for t in host_types %}
+                        <option value="{{ t }}" {% if t == host.host_type %}selected{% endif %}>{{ t }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td class="actions-cell">
+                    {% if host.status != 'approved' %}
+                    <button type="button" class="btn btn-approve" onclick="updateStatus({{ host.id }}, 'approved')">Approve</button>
+                    {% endif %}
+                    {% if host.status != 'rejected' %}
+                    <button type="button" class="btn btn-reject" onclick="updateStatus({{ host.id }}, 'rejected')">Reject</button>
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="9" class="empty">No hosts discovered yet. Run <code>netbox-auto discover</code> to scan.</td>
+            </tr>
             {% endfor %}
-          </select>
-        </form>
-      </td>
-      <td class="actions-cell">
-        {% if host.status != 'approved' %}
-        <form
-          action="{{ url_for('main.update_host_status', host_id=host.id) }}"
-          method="post"
-          class="inline-form"
-        >
-          <input type="hidden" name="status" value="approved" />
-          <button type="submit" class="btn btn-approve" title="Approve">
-            Approve
-          </button>
-        </form>
-        {% endif %} {% if host.status != 'rejected' %}
-        <form
-          action="{{ url_for('main.update_host_status', host_id=host.id) }}"
-          method="post"
-          class="inline-form"
-        >
-          <input type="hidden" name="status" value="rejected" />
-          <button type="submit" class="btn btn-reject" title="Reject">
-            Reject
-          </button>
-        </form>
-        {% endif %}
-      </td>
-    </tr>
-    {% else %}
-    <tr>
-      <td colspan="8" class="empty">
-        No hosts discovered yet. Run <code>netbox-auto discover</code> to scan.
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+        </tbody>
+    </table>
+</form>
+
+<script>
+function toggleAll(source) {
+    var checkboxes = document.querySelectorAll('.host-checkbox');
+    checkboxes.forEach(function(cb) {
+        cb.checked = source.checked;
+    });
+}
+
+function updateStatus(hostId, status) {
+    var form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '/hosts/' + hostId + '/status';
+    var input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = 'status';
+    input.value = status;
+    form.appendChild(input);
+    document.body.appendChild(form);
+    form.submit();
+}
+
+function updateType(hostId, hostType) {
+    var form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '/hosts/' + hostId + '/type';
+    var input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = 'host_type';
+    input.value = hostType;
+    form.appendChild(input);
+    document.body.appendChild(form);
+    form.submit();
+}
+</script>
 {% endblock %}
