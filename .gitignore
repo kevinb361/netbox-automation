@@ -55,3 +55,4 @@ config.yml
 # Environment
 .env
 .env.local
+.planning/
