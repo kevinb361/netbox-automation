@@ -6,10 +6,12 @@ Orchestrates the push workflow from approved hosts to NetBox and DNS.
 import logging
 from dataclasses import dataclass, field
 
+from sqlalchemy.orm import Session
+
 from netbox_auto.database import get_session
 from netbox_auto.dns import generate_unbound_config, push_dns_config
 from netbox_auto.models import Host, HostSource, HostStatus
-from netbox_auto.netbox import get_netbox_client
+from netbox_auto.netbox import NetBoxClient, get_netbox_client
 
 logger = logging.getLogger(__name__)
 
@@ -93,10 +95,10 @@ def push_approved_hosts(
 
 def _push_host_to_netbox(
     host: Host,
-    netbox_client: "get_netbox_client",  # noqa: F821
+    netbox_client: NetBoxClient,
     result: PushResult,
     dry_run: bool,
-    session: "Session",  # noqa: F821
+    session: Session,
 ) -> None:
     """Push a single host to NetBox.
 

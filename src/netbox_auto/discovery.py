@@ -9,6 +9,8 @@ from collections import defaultdict
 from dataclasses import dataclass
 from datetime import UTC, datetime
 
+from sqlalchemy.orm import Session
+
 from netbox_auto.collectors import (
     DHCPCollector,
     DiscoveredHost,
@@ -16,7 +18,7 @@ from netbox_auto.collectors import (
     ScannerCollector,
     SwitchCollector,
 )
-from netbox_auto.config import get_config
+from netbox_auto.config import Config, get_config
 from netbox_auto.database import get_session
 from netbox_auto.models import DiscoveryRun, DiscoveryStatus, Host, HostSource
 
@@ -116,7 +118,7 @@ def run_discovery() -> DiscoveryResult:
     )
 
 
-def _run_host_collectors(config) -> list[CollectorResult]:
+def _run_host_collectors(config: Config) -> list[CollectorResult]:
     """Run all configured host collectors.
 
     Instantiates and runs collectors based on what's configured:
@@ -135,10 +137,10 @@ def _run_host_collectors(config) -> list[CollectorResult]:
     # DHCP collector
     if config.mikrotik:
         try:
-            collector = DHCPCollector(config.mikrotik)
-            hosts = collector.collect()
-            results.append(CollectorResult(name=collector.name, hosts=hosts))
-            logger.info(f"{collector.name}: collected {len(hosts)} hosts")
+            dhcp_collector = DHCPCollector(config.mikrotik)
+            hosts = dhcp_collector.collect()
+            results.append(CollectorResult(name=dhcp_collector.name, hosts=hosts))
+            logger.info(f"{dhcp_collector.name}: collected {len(hosts)} hosts")
         except Exception as e:
             error_msg = str(e)
             logger.error(f"DHCP collector failed: {error_msg}")
@@ -147,10 +149,10 @@ def _run_host_collectors(config) -> list[CollectorResult]:
     # Proxmox collector
     if config.proxmox:
         try:
-            collector = ProxmoxCollector(config.proxmox)
-            hosts = collector.collect()
-            results.append(CollectorResult(name=collector.name, hosts=hosts))
-            logger.info(f"{collector.name}: collected {len(hosts)} VMs")
+            proxmox_collector = ProxmoxCollector(config.proxmox)
+            hosts = proxmox_collector.collect()
+            results.append(CollectorResult(name=proxmox_collector.name, hosts=hosts))
+            logger.info(f"{proxmox_collector.name}: collected {len(hosts)} VMs")
         except Exception as e:
             error_msg = str(e)
             logger.error(f"Proxmox collector failed: {error_msg}")
@@ -159,10 +161,10 @@ def _run_host_collectors(config) -> list[CollectorResult]:
     # Scanner collector
     if config.scanner and config.scanner.subnets:
         try:
-            collector = ScannerCollector(config.scanner)
-            hosts = collector.collect()
-            results.append(CollectorResult(name=collector.name, hosts=hosts))
-            logger.info(f"{collector.name}: collected {len(hosts)} hosts")
+            scanner_collector = ScannerCollector(config.scanner)
+            hosts = scanner_collector.collect()
+            results.append(CollectorResult(name=scanner_collector.name, hosts=hosts))
+            logger.info(f"{scanner_collector.name}: collected {len(hosts)} hosts")
         except Exception as e:
             error_msg = str(e)
             logger.error(f"Scanner collector failed: {error_msg}")
@@ -172,7 +174,7 @@ def _run_host_collectors(config) -> list[CollectorResult]:
 
 
 def _merge_and_persist(
-    session,
+    session: Session,
     all_hosts: list[DiscoveredHost],
     mac_to_port: dict[str, str],
     discovery_run: DiscoveryRun,

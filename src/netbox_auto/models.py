@@ -18,6 +18,7 @@ class Base(DeclarativeBase):
 
     type_annotation_map = {
         dict[str, Any]: JSON,
+        list[str]: JSON,
     }
 
 
@@ -82,7 +83,7 @@ class Host(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     mac: Mapped[str] = mapped_column(String(17), unique=True, index=True)
     hostname: Mapped[str | None] = mapped_column(String(255), nullable=True)
-    ip_addresses: Mapped[dict[str, Any]] = mapped_column(JSON, default=list)
+    ip_addresses: Mapped[list[str]] = mapped_column(JSON, default=list)
     source: Mapped[str] = mapped_column(String(20), default=HostSource.MANUAL.value)
     switch_port: Mapped[str | None] = mapped_column(String(100), nullable=True)
     status: Mapped[str] = mapped_column(String(20), default=HostStatus.PENDING.value)
