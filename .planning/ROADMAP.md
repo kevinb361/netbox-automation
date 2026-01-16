@@ -3,7 +3,7 @@
 ## Milestones
 
 - ✅ **v1.0 MVP** - Phases 1-4 (shipped)
-- ✅ **v1.1 Test Infrastructure** - Phases 5-7 (shipped)
+- 🔄 **v1.1 Test Infrastructure** - Phases 5-8 (in progress)
 
 ## Phases
 
@@ -19,13 +19,14 @@ See archived milestone documentation.
 
 </details>
 
-### ✅ v1.1 Test Infrastructure (Complete)
+### 🔄 v1.1 Test Infrastructure (In Progress)
 
 **Milestone Goal:** Comprehensive test coverage as safety net before future feature development.
 
 - [x] **Phase 5: Unit Tests** - Core module test coverage
 - [x] **Phase 6: Integration & E2E Tests** - External mocks and CLI workflows
 - [x] **Phase 7: CI Pipeline** - GitHub Actions automation
+- [ ] **Phase 8: Fix mypy type errors for CI** - Resolve type checking issues
 
 ## Phase Details
 
@@ -63,13 +64,24 @@ See archived milestone documentation.
 **Research**: Unlikely (GitHub Actions for Python is well-documented)
 **Plans**: 1 (07-01)
 
+### Phase 8: Fix mypy type errors for CI
+**Goal**: Resolve all mypy type checking errors so CI passes
+**Depends on**: Phase 7
+**Requirements**: TYPE-01, TYPE-02
+**Success Criteria** (what must be TRUE):
+  1. `make type` passes with zero errors
+  2. CI pipeline passes type checking step
+**Research**: None (errors already diagnosed)
+**Plans**: 2 (08-01, 08-02)
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 5 → 6 → 7
+Phases execute in numeric order: 5 → 6 → 7 → 8
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 5. Unit Tests | 4/4 | Complete | 2026-01-16 |
 | 6. Integration & E2E | 4/4 | Complete | 2026-01-16 |
 | 7. CI Pipeline | 1/1 | Complete | 2026-01-16 |
+| 8. Fix mypy type errors | 0/2 | Planned | - |

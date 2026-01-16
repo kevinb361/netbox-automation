@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-01-15)
 
 **Core value:** Automated discovery and correlation of network hosts to their switch ports
-**Current focus:** Milestone v1.1 complete — ready for audit/archive
+**Current focus:** Fix mypy type errors for CI
 
 ## Current Position
 
-Phase: 7 of 7 (CI Pipeline) - COMPLETE
-Plan: All plans complete
-Status: Milestone v1.1 complete
-Last activity: 2026-01-16 — Phase 7 verified and complete
+Phase: 8 of 8 (Fix mypy type errors for CI) - PLANNED
+Plan: 08-01 (next)
+Status: Phase 8 planned with 2 plans
+Last activity: 2026-01-16 — Phase 8 planned
 
-Progress: ██████████ 100% (v1.0 complete, v1.1 complete)
+Progress: █████████░ 90% (v1.0 complete, v1.1 in progress)
 
 ## Performance Metrics
 
@@ -39,6 +39,10 @@ All v1.0 decisions logged in PROJECT.md Key Decisions table with outcomes.
 - `responses` library for HTTP API mocking (Proxmox, NetBox)
 - `pytest-mock` for non-HTTP services (librouteros, paramiko)
 - In-memory SQLite for database tests
+
+### Roadmap Evolution
+
+- Phase 8 added: Fix mypy type errors for CI
 
 ### Pending Todos
 
