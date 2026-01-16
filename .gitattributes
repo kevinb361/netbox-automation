@@ -1,2 +1,0 @@
-# Exclude from git archive / GitHub release downloads
-.planning/ export-ignore
