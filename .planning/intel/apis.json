@@ -1,0 +1,63 @@
+{
+  "_meta": {
+    "updated_at": "2026-04-27T15:55:00Z",
+    "version": 2
+  },
+  "description": "Public surfaces of netbox-automation: the netbox-auto CLI (Typer commands), the Flask review web app (HTTP routes), Collector Protocol (extension surface for new sources), staging DB schema, the configuration env-var contract, and external integrations (NetBox, MikroTik, Proxmox, Unbound).",
+  "console_scripts": {
+    "netbox-auto": {
+      "module": "netbox_auto.cli",
+      "entry": "app",
+      "file": "src/netbox_auto/cli.py",
+      "role": "Typer app — top-level `--config/-c` and `--version/-V`. Loads config and initializes SQLite DB on every invocation",
+      "subcommands": {
+        "discover": "Run all configured collectors, merge by MAC, persist to staging DB",
+        "serve": "Start the Flask review web UI (default 127.0.0.1:5000, --host/--port/--debug)",
+        "push": "Push approved hosts to NetBox + DNS (--dry-run, --skip-netbox, --skip-dns)",
+        "status": "Print host counts by status/type and the most recent DiscoveryRun summary"
+      }
+    }
+  },
+  "http_endpoints": {
+    "GET /": {"file": "src/netbox_auto/web/app.py", "role": "Redirect to /hosts"},
+    "GET /hosts": {"file": "src/netbox_auto/web/app.py", "role": "Hosts table sorted by last_seen desc; renders templates/hosts.html"},
+    "POST /hosts/<int:host_id>/status": {"file": "src/netbox_auto/web/app.py", "role": "Update Host.status (pending/approved/rejected/pushed)"},
+    "POST /hosts/<int:host_id>/type": {"file": "src/netbox_auto/web/app.py", "role": "Update Host.host_type (server/workstation/iot/network/unknown)"},
+    "POST /hosts/bulk": {"file": "src/netbox_auto/web/app.py", "role": "Bulk status/type update across selected hosts"},
+    "GET /reconcile": {"file": "src/netbox_auto/web/app.py", "role": "Reconciliation view — new/matched/stale relative to NetBox; renders templates/reconcile.html"},
+    "POST /reconcile/import": {"file": "src/netbox_auto/web/app.py", "role": "Trigger import_netbox_devices() to pull existing NetBox inventory into the staging DB"}
+  },
+  "collector_extension_surface": {
+    "Protocol": "src/netbox_auto/collectors/base.py — Collector(name property, collect()) + DiscoveredHost dataclass",
+    "MAC normalization": "DiscoveredHost.__post_init__ lowercases the MAC and converts dashes to colons",
+    "Builtin collectors": {
+      "DHCPCollector": "MikroTik DHCP leases via librouteros (file: src/netbox_auto/collectors/dhcp.py)",
+      "ProxmoxCollector": "Proxmox VMs via proxmoxer (file: src/netbox_auto/collectors/proxmox.py)",
+      "ScannerCollector": "ARP scan via scapy — requires root for raw sockets (file: src/netbox_auto/collectors/scanner.py)",
+      "SwitchCollector": "MikroTik switch MAC tables — returns dict[mac -> 'switch_name:port'] (file: src/netbox_auto/collectors/switch.py)"
+    }
+  },
+  "staging_db_schema": {
+    "engine": "SQLite (default file netbox-auto.db)",
+    "tables": {
+      "discovery_run": "id PK, started_at, completed_at, status (running/completed/failed)",
+      "host": "id PK, mac UNIQUE INDEXED, hostname, ip_addresses JSON, source, switch_port, status, host_type, first_seen, last_seen, discovery_run_id FK, netbox_id, notes; index ix_host_mac_lookup"
+    }
+  },
+  "configuration_env_vars": {
+    "format": "NETBOX_AUTO_<SECTION>__<FIELD> (double underscore between section and field)",
+    "examples": [
+      "NETBOX_AUTO_MIKROTIK__PASSWORD",
+      "NETBOX_AUTO_NETBOX__TOKEN",
+      "NETBOX_AUTO_PROXMOX__PASSWORD"
+    ],
+    "config_path_env": "NETBOX_AUTO_CONFIG (also via --config / -c on the CLI)"
+  },
+  "external_integrations": {
+    "MikroTik RouterOS API": "librouteros (port 8728 default) — DHCP leases + switch MAC tables",
+    "Proxmox API": "proxmoxer — VM enumeration",
+    "NetBox API": "pynetbox — device/VM/IP/cable CRUD with lazy connection",
+    "Unbound DNS": "paramiko SSH — atomic replace of /etc/unbound/local.d/local.conf (path configurable per host)",
+    "Network": "scapy ARP requests — needs root"
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "_meta": {
+    "updated_at": "2026-04-27T15:55:00Z",
+    "version": 2,
+    "scope": "Intra-package imports of netbox_auto.* modules. External libraries (typer, flask, sqlalchemy, pydantic, pynetbox, librouteros, proxmoxer, scapy, paramiko) are not edges — see stack.json.core_dependencies."
+  },
+  "entry_points": {
+    "netbox_auto.cli": "Typer CLI (console-script netbox-auto)",
+    "netbox_auto.web.app": "Flask app factory (create_app)"
+  },
+  "edges": {
+    "netbox_auto.cli": [
+      "netbox_auto.config",
+      "netbox_auto.database",
+      "netbox_auto.discovery",
+      "netbox_auto.web.app",
+      "netbox_auto.models",
+      "netbox_auto.push"
+    ],
+    "netbox_auto.discovery": [
+      "netbox_auto.collectors",
+      "netbox_auto.config",
+      "netbox_auto.database",
+      "netbox_auto.models"
+    ],
+    "netbox_auto.reconcile": [
+      "netbox_auto.database",
+      "netbox_auto.models",
+      "netbox_auto.netbox"
+    ],
+    "netbox_auto.push": [
+      "netbox_auto.database",
+      "netbox_auto.models",
+      "netbox_auto.netbox",
+      "netbox_auto.dns",
+      "netbox_auto.config"
+    ],
+    "netbox_auto.netbox": [
+      "netbox_auto.config",
+      "netbox_auto.models"
+    ],
+    "netbox_auto.dns": [
+      "netbox_auto.config"
+    ],
+    "netbox_auto.database": [
+      "netbox_auto.models",
+      "netbox_auto.config"
+    ],
+    "netbox_auto.collectors": [
+      "netbox_auto.collectors.base",
+      "netbox_auto.collectors.dhcp",
+      "netbox_auto.collectors.proxmox",
+      "netbox_auto.collectors.scanner",
+      "netbox_auto.collectors.switch"
+    ],
+    "netbox_auto.collectors.base": ["netbox_auto.models"],
+    "netbox_auto.collectors.dhcp": ["netbox_auto.collectors.base", "netbox_auto.config", "netbox_auto.models"],
+    "netbox_auto.collectors.proxmox": ["netbox_auto.collectors.base", "netbox_auto.config", "netbox_auto.models"],
+    "netbox_auto.collectors.scanner": ["netbox_auto.collectors.base", "netbox_auto.config", "netbox_auto.models"],
+    "netbox_auto.collectors.switch": ["netbox_auto.config"],
+    "netbox_auto.web.app": [
+      "netbox_auto.database",
+      "netbox_auto.models",
+      "netbox_auto.reconcile"
+    ]
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "_meta": {
+    "updated_at": "2026-04-27T15:55:00Z",
+    "version": 2
+  },
+  "canonical_source": ".planning/intel/arch.md",
+  "decisions": [
+    {
+      "decision": "MAC address is the primary correlation key across all sources",
+      "evidence": ["src/netbox_auto/discovery.py", "src/netbox_auto/models.py", "src/netbox_auto/collectors/base.py"]
+    },
+    {
+      "decision": "Source priority for hostname/source selection: DHCP > Proxmox > Scan",
+      "evidence": ["src/netbox_auto/discovery.py (_pick_hostname, _pick_primary_source)"]
+    },
+    {
+      "decision": "Human-in-the-loop review is mandatory — pending → approved/rejected → pushed",
+      "evidence": ["src/netbox_auto/models.py (HostStatus)", "src/netbox_auto/web/app.py", "src/netbox_auto/push.py"]
+    },
+    {
+      "decision": "Lazy NetBox connection — pynetbox client connects on first use, not at __init__",
+      "evidence": ["src/netbox_auto/netbox.py", "CLAUDE.md (Key Patterns)"]
+    },
+    {
+      "decision": "Secrets via NETBOX_AUTO_<SECTION>__<FIELD> environment variables, not YAML",
+      "evidence": ["src/netbox_auto/config.py", "config.example.yaml", "CLAUDE.md"]
+    },
+    {
+      "decision": "Idempotent push with --dry-run, --skip-netbox, --skip-dns",
+      "evidence": ["src/netbox_auto/cli.py (push command)", "src/netbox_auto/push.py"]
+    },
+    {
+      "decision": "IPv6 is opt-in via discovery.include_ipv6 (default false)",
+      "evidence": ["src/netbox_auto/discovery.py (_is_ipv6 filter)", "src/netbox_auto/config.py"]
+    },
+    {
+      "decision": "Local SQLite staging DB sits between every collector and the NetBox push",
+      "evidence": ["src/netbox_auto/database.py", "src/netbox_auto/models.py", "CLAUDE.md (Data Flow)"]
+    },
+    {
+      "decision": "Strict MyPy with explicit per-module ignore_missing_imports overrides for stub-less libraries",
+      "evidence": ["pyproject.toml [tool.mypy]"]
+    },
+    {
+      "decision": "Web UI binds to 127.0.0.1 by default — no auth, single-operator tool",
+      "evidence": ["src/netbox_auto/cli.py (serve command default --host)"]
+    },
+    {
+      "decision": "Collectors implement a Protocol (not ABC) — duck-typed extension point",
+      "evidence": ["src/netbox_auto/collectors/base.py"]
+    },
+    {
+      "decision": "MAC normalization at the boundary — DiscoveredHost.__post_init__ lowercases and dash→colon",
+      "evidence": ["src/netbox_auto/collectors/base.py"]
+    },
+    {
+      "decision": "Switch port mapping preserves existing values when current run lacks data (existing.switch_port = switch_port or existing.switch_port)",
+      "evidence": ["src/netbox_auto/discovery.py (_merge_and_persist)"]
+    }
+  ]
+}

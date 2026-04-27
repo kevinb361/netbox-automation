@@ -1,0 +1,60 @@
+{
+  "_meta": {
+    "updated_at": "2026-04-27T15:55:00Z",
+    "version": 2
+  },
+  "name": "netbox-auto",
+  "version": "0.1.0",
+  "description": "Network discovery tool — collects hosts from MikroTik DHCP / Proxmox / ARP scans / switch MAC tables, merges by MAC, surfaces a Flask review UI, and pushes approved hosts to NetBox plus Unbound DNS records over SSH.",
+  "languages": ["Python"],
+  "language_versions": {"Python": ">=3.11"},
+  "frameworks": ["Typer (CLI)", "Flask 3 (web review UI)", "Pydantic 2 + pydantic-settings (config)", "SQLAlchemy 2 (staging DB)"],
+  "runtime": {
+    "type": "operator-driven CLI + ad-hoc local web review server",
+    "discovery_step": "netbox-auto discover (one-shot, writes to staging DB)",
+    "review_step": "netbox-auto serve (Flask app on 127.0.0.1:5000 by default)",
+    "push_step": "netbox-auto push (idempotent — supports --dry-run, --skip-netbox, --skip-dns)"
+  },
+  "tools": [
+    "Black (line length 100)",
+    "Ruff (lint, target py311; rules E,F,I,UP,B,SIM)",
+    "MyPy (strict; disable_error_code import-untyped)",
+    "Pytest"
+  ],
+  "build_system": "setuptools (PEP 621 pyproject.toml)",
+  "test_framework": "pytest",
+  "package_manager": "pip (editable install via `pip install -e \".[dev]\"`)",
+  "core_dependencies": [
+    "typer[all] >=0.9 (CLI)",
+    "pyyaml >=6 (config loading)",
+    "pydantic >=2 + pydantic-settings >=2 (config models)",
+    "sqlalchemy >=2 (staging DB)",
+    "librouteros >=3.2 (MikroTik API)",
+    "proxmoxer >=2 (Proxmox API)",
+    "scapy >=2.5 (ARP scanning — needs root)",
+    "flask >=3 (review UI)",
+    "pynetbox >=7 (NetBox API)",
+    "paramiko >=3 (SSH push to Unbound)",
+    "requests (HTTP)"
+  ],
+  "deploy_targets": ["operator workstation (local execution)"],
+  "console_scripts": ["netbox-auto"],
+  "storage": {
+    "engine": "SQLite (default file netbox-auto.db in CWD)",
+    "schema_module": "netbox_auto.models",
+    "tables": ["discovery_run", "host"]
+  },
+  "configuration": {
+    "file": "config.yaml (template: config.example.yaml)",
+    "env_prefix": "NETBOX_AUTO_",
+    "env_separator": "__ (double underscore between section and field)",
+    "config_path_env": "NETBOX_AUTO_CONFIG"
+  },
+  "content_formats": [
+    "Python source",
+    "Jinja2 (Flask templates)",
+    "CSS",
+    "YAML (config)",
+    "Markdown (README, CHANGELOG, CLAUDE.md)"
+  ]
+}

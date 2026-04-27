@@ -1,0 +1,55 @@
+{
+  "_meta": {
+    "updated_at": "2026-04-27T15:55:00Z",
+    "version": 2,
+    "scope": "One-line role for every Python source file under src/netbox_auto/, web templates/static, top-level config + tooling files, and test files."
+  },
+  "src/netbox_auto/": {
+    "__init__.py": "Package marker; defines __version__ = '0.1.0'",
+    "cli.py": "Typer CLI entry point — registers commands (discover, serve, push, status), loads config in callback, calls init_db, and renders rich console output. Console-script `netbox-auto` points at `cli:app`",
+    "config.py": "Pydantic v2 + pydantic-settings configuration — MikroTikConfig, SwitchConfig, ProxmoxConfig, NetBoxConfig, UnboundConfig (list of UnboundHostConfig), ScannerConfig, plus a top-level Config with discovery.include_ipv6 toggle. YAML loader merged with env-var overrides under prefix NETBOX_AUTO_<SECTION>__<FIELD>",
+    "database.py": "SQLAlchemy 2.0 engine + sessionmaker for the SQLite staging DB (default netbox-auto.db); init_db() creates tables, get_session() returns a fresh Session",
+    "models.py": "SQLAlchemy 2.0 ORM with Mapped/mapped_column. Base + DiscoveryRun + Host tables. Status/source/type enums (DiscoveryStatus, HostSource={dhcp,proxmox,scan,manual}, HostStatus={pending,approved,rejected,pushed}, HostType={server,workstation,iot,network,unknown}). Host.mac unique-indexed",
+    "discovery.py": "Orchestrator — run_discovery() creates a DiscoveryRun, runs DHCP/Proxmox/Scanner collectors plus Switch collector for MAC-to-port mappings, merges hosts by lowercased MAC, picks hostname by priority (DHCP>Proxmox>Scan), filters IPv6 unless include_ipv6, persists to Host table. Returns DiscoveryResult(total, new, updated, errors)",
+    "reconcile.py": "Reconciliation between staging DB and existing NetBox inventory — import_netbox_devices() pulls existing devices/VMs into the staging DB; reconcile_hosts() classifies each as new / matched / stale relative to NetBox",
+    "push.py": "push_approved_hosts(dry_run, skip_netbox, skip_dns) — iterates Host rows with status=APPROVED, creates NetBox device/VM + cable records via netbox.py, updates DNS via dns.py, marks host PUSHED. Returns counts and per-server DNS update list",
+    "netbox.py": "pynetbox wrapper with lazy connection — device/VM CRUD, IP-address creation, cable creation. Connects on first use, not at __init__",
+    "dns.py": "Generates Unbound local-data records and pushes via paramiko SSH, atomically replacing the configured local.conf path on each Unbound host listed in config",
+    "collectors/__init__.py": "Re-exports DHCPCollector, ProxmoxCollector, ScannerCollector, SwitchCollector, DiscoveredHost, Collector",
+    "collectors/base.py": "Collector Protocol (name + collect()) and DiscoveredHost dataclass (mac normalized to lowercase colon-separated, hostname, ip_addresses, source, switch_port). MAC normalization in __post_init__",
+    "collectors/dhcp.py": "MikroTik DHCP-lease collector via librouteros API (port 8728 by default); yields DiscoveredHost with source=DHCP, hostname from lease comment/host-name",
+    "collectors/proxmox.py": "Proxmox VM collector via proxmoxer — enumerates qemu+lxc guests across nodes, reads MAC from VM config and IPs from guest agent (if available); source=PROXMOX",
+    "collectors/scanner.py": "Scapy-based ARP scanner for static IPs across configured subnets (requires root for raw sockets); source=SCAN",
+    "collectors/switch.py": "MikroTik switch MAC-table collector — returns dict[mac -> '<switch_name>:<port>'] used by discovery.py to fill Host.switch_port",
+    "web/__init__.py": "Web subpackage marker (re-exports create_app)",
+    "web/app.py": "Flask app factory + Blueprint 'main'. Routes: GET /, GET /hosts, POST /hosts/<id>/status, POST /hosts/<id>/type, POST /hosts/bulk, GET /reconcile, POST /reconcile/import",
+    "web/templates/base.html": "Base Jinja layout (header, flash messages, content block)",
+    "web/templates/hosts.html": "Hosts table with inline status/type forms and bulk-action form",
+    "web/templates/reconcile.html": "Reconciliation view (new vs matched vs stale relative to NetBox) with import action",
+    "web/static/style.css": "Web UI styling"
+  },
+  "tests/": {
+    "__init__.py": "Tests package marker",
+    "conftest.py": "Pytest fixtures shared across unit/integration/e2e",
+    "unit/test_config.py": "Unit tests for Pydantic config loading and env-var overrides",
+    "unit/test_models.py": "Unit tests for ORM enums and Host/DiscoveryRun behavior",
+    "unit/test_discovery.py": "Unit tests for discovery orchestration (hostname priority, MAC merge, IPv6 filter)",
+    "unit/test_reconcile.py": "Unit tests for new/matched/stale classification",
+    "integration/test_collectors.py": "Integration tests for collectors (mocks for librouteros / proxmoxer / scapy)",
+    "integration/test_dns.py": "Integration tests for the Unbound DNS push path",
+    "integration/test_netbox.py": "Integration tests for the pynetbox wrapper",
+    "e2e/test_cli.py": "End-to-end Typer CLI tests (CliRunner)"
+  },
+  "/": {
+    "pyproject.toml": "Build + project metadata. Console-script `netbox-auto = netbox_auto.cli:app`. Deps: typer[all], pyyaml, pydantic + pydantic-settings, sqlalchemy 2, librouteros, proxmoxer, requests, scapy, flask, pynetbox, paramiko. Dev: black, ruff, mypy strict, pytest. Black/Ruff line-length=100, target py311",
+    "Makefile": "make ci (format+lint+type+test); plus format/lint/type/test individually",
+    "config.example.yaml": "Template for config.yaml — mikrotik/proxmox/netbox/unbound/scanner/switches sections plus discovery.include_ipv6 toggle",
+    "CHANGELOG.md": "Release notes",
+    "README.md": "User-facing documentation — installation, configuration, CLI reference",
+    "CLAUDE.md": "Claude Code project guidance — data flow, module structure, key patterns (MAC correlation, source priority, lazy connections, env-var secrets)",
+    "AGENTS.md": "Symlink to CLAUDE.md (Codex CLI)",
+    ".gitignore": "Standard Python gitignore + the staging SQLite DB",
+    ".github/workflows/ci.yml": "GitHub Actions CI workflow — runs `make ci`",
+    "images/netbox_auto.png": "Web UI screenshot referenced from README"
+  }
+}

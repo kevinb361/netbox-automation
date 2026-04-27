@@ -1,0 +1,20 @@
+{
+  "_meta": {
+    "updated_at": "2026-04-27T15:55:00Z",
+    "version": 2
+  },
+  "canonical_source": ".planning/intel/apis.json",
+  "entries": {
+    "GET /": {"method": "GET", "path": "/", "file": "src/netbox_auto/web/app.py", "description": "Redirect to /hosts"},
+    "GET /hosts": {"method": "GET", "path": "/hosts", "file": "src/netbox_auto/web/app.py", "description": "Hosts table sorted by last_seen desc; renders templates/hosts.html"},
+    "POST /hosts/<id>/status": {"method": "POST", "path": "/hosts/<int:host_id>/status", "file": "src/netbox_auto/web/app.py", "description": "Update Host.status to one of pending/approved/rejected/pushed"},
+    "POST /hosts/<id>/type": {"method": "POST", "path": "/hosts/<int:host_id>/type", "file": "src/netbox_auto/web/app.py", "description": "Update Host.host_type to one of server/workstation/iot/network/unknown"},
+    "POST /hosts/bulk": {"method": "POST", "path": "/hosts/bulk", "file": "src/netbox_auto/web/app.py", "description": "Bulk status/type update for multiple selected hosts"},
+    "GET /reconcile": {"method": "GET", "path": "/reconcile", "file": "src/netbox_auto/web/app.py", "description": "Reconciliation view — new/matched/stale relative to NetBox"},
+    "POST /reconcile/import": {"method": "POST", "path": "/reconcile/import", "file": "src/netbox_auto/web/app.py", "description": "Pull existing NetBox devices/VMs into the staging DB"},
+    "cli:netbox-auto discover": {"method": "CLI", "path": "discover", "file": "src/netbox_auto/cli.py", "description": "Run all configured collectors, merge by MAC, persist to staging DB"},
+    "cli:netbox-auto serve": {"method": "CLI", "path": "serve", "file": "src/netbox_auto/cli.py", "description": "Start Flask review UI (default 127.0.0.1:5000)"},
+    "cli:netbox-auto push": {"method": "CLI", "path": "push", "file": "src/netbox_auto/cli.py", "description": "Push approved hosts to NetBox + DNS (--dry-run, --skip-netbox, --skip-dns)"},
+    "cli:netbox-auto status": {"method": "CLI", "path": "status", "file": "src/netbox_auto/cli.py", "description": "Show host counts by status/type and most recent DiscoveryRun"}
+  }
+}
