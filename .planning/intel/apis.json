@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "updated_at": "2026-04-27T15:55:00Z",
-    "version": 2
+    "updated_at": "2026-07-09T15:30:00Z",
+    "version": 3
   },
   "description": "Public surfaces of netbox-automation: the netbox-auto CLI (Typer commands), the Flask review web app (HTTP routes), Collector Protocol (extension surface for new sources), staging DB schema, the configuration env-var contract, and external integrations (NetBox, MikroTik, Proxmox, Unbound).",
   "console_scripts": {

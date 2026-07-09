@@ -2,8 +2,8 @@
 
 <!--
 _meta:
-  updated_at: 2026-04-27T15:55:00Z
-  version: 2
+  updated_at: 2026-07-09T15:30:00Z
+  version: 3
   scope: Architectural shape captured from CLAUDE.md, README.md, pyproject.toml, and the src/netbox_auto/ implementation as of v0.1.0.
 -->
 
@@ -20,8 +20,8 @@ Each step is a separate CLI command (`netbox-auto discover|serve|push|status`). 
 
 ## Modules
 
-- **`cli.py`** — Typer app. Loads config and runs `init_db()` in the top-level callback before any subcommand fires. Console-script `netbox-auto` is registered in `pyproject.toml` to `netbox_auto.cli:app`.
-- **`config.py`** — Pydantic v2 models (`MikroTikConfig`, `SwitchConfig`, `ProxmoxConfig`, `NetBoxConfig`, `UnboundConfig` containing a list of `UnboundHostConfig`, `ScannerConfig`) plus a top-level `Config`. YAML file loader is merged with environment overrides under prefix `NETBOX_AUTO_<SECTION>__<FIELD>` — secrets travel through env, not the YAML.
+- **`cli.py`** — Typer app. Loads config and runs `init_db()` in the top-level callback before any subcommand fires. Console-script `netbox-auto` is registered in `pyproject.toml` to `netbox_auto.cli:app`. Uses `rich.console.Console` for formatted output.
+- **`config.py`** — Pydantic v2 models (`MikroTikConfig`, `SwitchConfig`, `ProxmoxConfig`, `NetBoxConfig`, `UnboundConfig` containing a list of `UnboundHostConfig`, `ScannerConfig`) plus a top-level `Config` (BaseSettings). YAML file loader is merged with environment overrides under prefix `NETBOX_AUTO_<SECTION>__<FIELD>` — secrets travel through env, not the YAML.
 - **`database.py`** — SQLAlchemy 2 engine + `sessionmaker` against `netbox-auto.db`. `init_db()` is idempotent.
 - **`models.py`** — SQLAlchemy 2 ORM with `Mapped`/`mapped_column`. Two tables: `discovery_run` (status, timestamps) and `host` (MAC unique-indexed; `ip_addresses` is JSON; `host_type` and `status` are persisted as the value of their respective enums). `host.mac` carries an extra `ix_host_mac_lookup` index.
 - **`discovery.py`** — Orchestrator. `run_discovery()` creates a `DiscoveryRun`, runs the host collectors (DHCP, Proxmox, Scanner) and the Switch collector for MAC-to-port mappings, merges hosts by lowercased MAC, picks hostname by priority (DHCP > Proxmox > Scan), filters IPv6 unless `discovery.include_ipv6=true`, then upserts into `host`.
