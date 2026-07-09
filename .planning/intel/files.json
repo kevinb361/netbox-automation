@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "updated_at": "2026-04-27T15:55:00Z",
-    "version": 2,
+    "updated_at": "2026-07-09T14:30:00Z",
+  "version": 3,
     "scope": "One-line role for every Python source file under src/netbox_auto/, web templates/static, top-level config + tooling files, and test files."
   },
   "src/netbox_auto/": {
@@ -31,19 +31,23 @@
   "tests/": {
     "__init__.py": "Tests package marker",
     "conftest.py": "Pytest fixtures shared across unit/integration/e2e",
+    "unit/__init__.py": "Unit tests package marker",
     "unit/test_config.py": "Unit tests for Pydantic config loading and env-var overrides",
     "unit/test_models.py": "Unit tests for ORM enums and Host/DiscoveryRun behavior",
     "unit/test_discovery.py": "Unit tests for discovery orchestration (hostname priority, MAC merge, IPv6 filter)",
     "unit/test_reconcile.py": "Unit tests for new/matched/stale classification",
+    "integration/__init__.py": "Integration tests package marker",
     "integration/test_collectors.py": "Integration tests for collectors (mocks for librouteros / proxmoxer / scapy)",
     "integration/test_dns.py": "Integration tests for the Unbound DNS push path",
     "integration/test_netbox.py": "Integration tests for the pynetbox wrapper",
+    "e2e/__init__.py": "E2E tests package marker",
     "e2e/test_cli.py": "End-to-end Typer CLI tests (CliRunner)"
   },
   "/": {
     "pyproject.toml": "Build + project metadata. Console-script `netbox-auto = netbox_auto.cli:app`. Deps: typer[all], pyyaml, pydantic + pydantic-settings, sqlalchemy 2, librouteros, proxmoxer, requests, scapy, flask, pynetbox, paramiko. Dev: black, ruff, mypy strict, pytest. Black/Ruff line-length=100, target py311",
     "Makefile": "make ci (format+lint+type+test); plus format/lint/type/test individually",
     "config.example.yaml": "Template for config.yaml — mikrotik/proxmox/netbox/unbound/scanner/switches sections plus discovery.include_ipv6 toggle",
+    "config.yaml": "Active local configuration file (derived from config.example.yaml, contains real credentials/endpoints; gitignored)",
     "CHANGELOG.md": "Release notes",
     "README.md": "User-facing documentation — installation, configuration, CLI reference",
     "CLAUDE.md": "Claude Code project guidance — data flow, module structure, key patterns (MAC correlation, source priority, lazy connections, env-var secrets)",
