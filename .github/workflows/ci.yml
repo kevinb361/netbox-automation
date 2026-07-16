@@ -33,7 +33,7 @@ jobs:
             ${{ runner.os }}-pip-
 
       - name: Install dependencies
-        run: pip install -e ".[dev]"
+        run: pip install -e ".[dev]" black==25.12.0 ruff==0.14.13 mypy==1.19.1 pytest==9.0.2
 
       - name: Run lint (ruff)
         run: ruff check src/ tests/
